@@ -23,7 +23,9 @@ namespace MunicipalServicesApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            ReportIssueForm reportWindow = new ReportIssueForm();
+            reportWindow.Show();
+            this.Close();
         }
     }
 }

@@ -5,12 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MunicipalServicesApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Label Content="Municipal Service Portal" HorizontalAlignment="Left" Margin="157,86,0,0" VerticalAlignment="Top"/>
-        <Button Content="Report" HorizontalAlignment="Left" Margin="320,249,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Button Content="Local Events" HorizontalAlignment="Left" Margin="104,293,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <Button Content="Service Status" HorizontalAlignment="Left" Margin="501,313,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+        Title="Municipal Service Portal" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Background="#f0f4f8">
 
+    <Grid>
+        <!-- Title -->
+        <TextBlock Text="Municipal Service Portal"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Foreground="#2c3e50"
+                   HorizontalAlignment="Center"
+                   Margin="0,40,0,0"/>
+
+        <!-- Buttons -->
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="280">
+            <Button x:Name="btnReportIssues" 
+                    Content="📌 Report Issues" 
+                    Height="40" FontSize="16"
+                    Background="#3498db" Foreground="White"
+                    Margin="0,0,0,15"
+                    Click="Button_Click"/>
+
+            <Button x:Name="btnLocalEvents" 
+                    Content="📅 Local Events &amp; Announcements" 
+                    Height="40" FontSize="16"
+                    Background="#bdc3c7" Foreground="White"
+                    Margin="0,0,0,15"
+                    IsEnabled="False"/>
+
+            <Button x:Name="btnServiceStatus" 
+                    Content="📊 Service Request Status" 
+                    Height="40" FontSize="16"
+                    Background="#bdc3c7" Foreground="White"
+                    IsEnabled="False"/>
+        </StackPanel>
     </Grid>
 </Window>

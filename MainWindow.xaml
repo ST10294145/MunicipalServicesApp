@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Label Content="Municipal Service Portal" HorizontalAlignment="Left" Margin="157,86,0,0" VerticalAlignment="Top"/>
+        <Button Content="Report" HorizontalAlignment="Left" Margin="320,249,0,0" VerticalAlignment="Top"/>
+        <Button Content="Local Events" HorizontalAlignment="Left" Margin="104,293,0,0" VerticalAlignment="Top"/>
+        <Button Content="Service Status" HorizontalAlignment="Left" Margin="501,313,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

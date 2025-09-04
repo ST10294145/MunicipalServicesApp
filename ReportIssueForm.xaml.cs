@@ -56,5 +56,7 @@ namespace MunicipalServicesApp
             mainWindow.Show();
             this.Close();
         }
+
+       
     }
 }

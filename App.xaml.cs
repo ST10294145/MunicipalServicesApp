@@ -9,6 +9,8 @@ namespace MunicipalServicesApp
     /// </summary>
     public partial class App : Application
     {
+        // Custom linked list shared across all windows
+        public IssueLinkedList IssueList { get; } = new IssueLinkedList();
     }
 
 }

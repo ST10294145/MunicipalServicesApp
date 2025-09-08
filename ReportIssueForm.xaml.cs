@@ -15,34 +15,38 @@ namespace MunicipalServicesApp
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            string title = txtTitle.Text.Trim();
-            string description = txtDescription.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description))
+            // Validate input
+            if (string.IsNullOrWhiteSpace(txtTitle.Text) || string.IsNullOrWhiteSpace(txtDescription.Text))
             {
-                MessageBox.Show("Please fill in both the Title and Description fields.",
-                                "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter both a Title and Description.", "Validation Error",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Create new issue
+            // Get selected category text
+            string selectedCategory = (cmbCategory.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Other";
+
+            // Create a new issue
             Issue newIssue = new Issue
             {
-                Title = title,
-                Description = description,
+                Title = txtTitle.Text,
+                Description = txtDescription.Text,
+                Reporter = txtName.Text,
+                Email = txtEmail.Text,
+                Category = selectedCategory,
                 Status = "Pending",
                 CreatedAt = DateTime.Now
             };
 
-            // Add to global IssueList
+            // Add issue to the global linked list
             ((App)Application.Current).IssueList.AddIssue(newIssue);
 
-            MessageBox.Show("Issue submitted successfully!",
-                            "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Issue submitted successfully!", "Success",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // Close and return to MainWindow
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            // Go back to the main window
+            MainWindow main = new MainWindow();
+            main.Show();
             this.Close();
         }
 

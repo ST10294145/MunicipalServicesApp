@@ -22,7 +22,7 @@
             <Button x:Name="btnReportIssues" 
                     Content="📌 Report Issues" 
                     Height="40" FontSize="16"
-                    Background="#3498db" Foreground="White"
+                    Background="DarkRed" Foreground="White"
                     Margin="0,0,0,15"
                     Click="Button_Click"/>
 
@@ -36,7 +36,7 @@
             <Button x:Name="btnServiceStatus" 
                     Content="📊 Service Request Status" 
                     Height="40" FontSize="16"
-                    Background="#bdc3c7" Foreground="White"
+                    Background="LightSkyBlue" Foreground="White"
                     Click="btnServiceStatus_Click"/>
         </StackPanel>
     </Grid>

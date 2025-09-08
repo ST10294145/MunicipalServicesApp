@@ -37,7 +37,7 @@
                     Content="📊 Service Request Status" 
                     Height="40" FontSize="16"
                     Background="#bdc3c7" Foreground="White"
-                    IsEnabled="False" Click="btnServiceStatus_Click"/>
+                    Click="btnServiceStatus_Click"/>
         </StackPanel>
     </Grid>
 </Window>

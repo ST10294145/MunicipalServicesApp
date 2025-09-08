@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MunicipalServicesApp.ReportIssueForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Report an Issue" Height="550" Width="600" WindowStartupLocation="CenterScreen"
+        Title="Report an Issue" Height="600" Width="600" WindowStartupLocation="CenterScreen"
         Background="#f0f4f8">
 
     <Grid Margin="20">
@@ -21,31 +21,49 @@
 
         <!-- Form -->
         <StackPanel Grid.Row="1" Margin="0,10,0,10">
+
+            <!-- Reporter -->
             <Label Content="Your Name:"/>
             <TextBox x:Name="txtName" 
                      Height="30" 
-                     Margin="0,0,0,10"/>
+                     Margin="0,0,0,10" TextChanged="txtReporter_TextChanged"/>
 
+            <!-- Email -->
             <Label Content="Your Email:"/>
             <TextBox x:Name="txtEmail" 
                      Height="30" 
                      Margin="0,0,0,10"/>
 
+            <!-- Province -->
+            <Label Content="Province:"/>
+            <ComboBox x:Name="cmbProvince" Height="30" Margin="0,0,0,10">
+                <ComboBoxItem Content="Eastern Cape"/>
+                <ComboBoxItem Content="Free State"/>
+                <ComboBoxItem Content="Gauteng"/>
+                <ComboBoxItem Content="KwaZulu-Natal"/>
+                <ComboBoxItem Content="Limpopo"/>
+                <ComboBoxItem Content="Mpumalanga"/>
+                <ComboBoxItem Content="Northern Cape"/>
+                <ComboBoxItem Content="North West"/>
+                <ComboBoxItem Content="Western Cape"/>
+            </ComboBox>
+
+            <!-- Category -->
             <Label Content="Category:"/>
             <ComboBox x:Name="cmbCategory" Height="30" Margin="0,0,0,10">
-                <ComboBoxItem Content="Water"/>
-                <ComboBoxItem Content="Electricity"/>
-                <ComboBoxItem Content="Roads"/>
+                <ComboBoxItem Content="Water Leak"/>
+                <ComboBoxItem Content="Electricity Outage"/>
+                <ComboBoxItem Content="Pothole"/>
                 <ComboBoxItem Content="Other"/>
             </ComboBox>
 
-            <!-- ✅ Added Title field -->
+            <!-- Title -->
             <Label Content="Title:"/>
             <TextBox x:Name="txtTitle" 
                      Height="30" 
                      Margin="0,0,0,10"/>
 
-            <!-- ✅ Already had Description -->
+            <!-- Description -->
             <Label Content="Description:"/>
             <TextBox x:Name="txtDescription" 
                      Height="100"  

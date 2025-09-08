@@ -1,36 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MunicipalServicesApp
 {
-    // Node in the linked list
     public class IssueNode
     {
         public Issue Data { get; set; }
         public IssueNode Next { get; set; }
 
-        public IssueNode(Issue data)
+        public IssueNode(Issue issue)
         {
-            Data = data;
+            Data = issue;
             Next = null;
         }
     }
 
-    // Custom linked list to store issues
     public class IssueLinkedList
     {
         private IssueNode head;
-        private int counter = 0;
+        private int nextId = 1;  // ✅ Track Issue IDs
 
-        // Add a new issue to the list
         public void AddIssue(Issue issue)
         {
-            counter++;
-            issue.Id = counter; // auto-generate issue ID
-
+            issue.IssueID = GetNextId(); // ✅ assign ID automatically
             IssueNode newNode = new IssueNode(issue);
 
             if (head == null)
@@ -48,15 +40,23 @@ namespace MunicipalServicesApp
             }
         }
 
-        // Retrieve all issues as IEnumerable
-        public IEnumerable<Issue> GetAllIssues()
+        public int GetNextId()
         {
+            return nextId++;
+        }
+
+        public List<Issue> GetAllIssues()
+        {
+            List<Issue> issues = new List<Issue>();
             IssueNode current = head;
+
             while (current != null)
             {
-                yield return current.Data;
+                issues.Add(current.Data);
                 current = current.Next;
             }
+
+            return issues;
         }
     }
 }

@@ -15,35 +15,32 @@ namespace MunicipalServicesApp
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            string name = txtName.Text;
-            string email = txtEmail.Text;
-            string category = (cmbCategory.SelectedItem as ComboBoxItem)?.Content.ToString();
-            string description = txtDescription.Text;
+            string title = txtTitle.Text.Trim();
+            string description = txtDescription.Text.Trim();
 
-            // Validation
-            if (string.IsNullOrWhiteSpace(name) ||
-                string.IsNullOrWhiteSpace(email) ||
-                string.IsNullOrWhiteSpace(category) ||
-                string.IsNullOrWhiteSpace(description))
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description))
             {
-                MessageBox.Show("Please fill in all fields before submitting.",
-                                "Validation Error",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
+                MessageBox.Show("Please fill in both the Title and Description fields.",
+                                "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Show success message (you can replace this with database/file saving later)
-            MessageBox.Show($"Issue reported successfully!\n\n" +
-                            $"Name: {name}\n" +
-                            $"Email: {email}\n" +
-                            $"Category: {category}\n" +
-                            $"Description: {description}",
-                            "Submission Successful",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+            // Create new issue
+            Issue newIssue = new Issue
+            {
+                Title = title,
+                Description = description,
+                Status = "Pending",
+                CreatedAt = DateTime.Now
+            };
 
-            // Redirect back to MainWindow
+            // Add to global IssueList
+            ((App)Application.Current).IssueList.AddIssue(newIssue);
+
+            MessageBox.Show("Issue submitted successfully!",
+                            "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            // Close and return to MainWindow
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();

@@ -32,14 +32,19 @@
                   RowHeight="35"
                   Margin="0,0,0,15">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="62"/>
-                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="180"/>
-                <DataGridTextColumn Header="Reporter" Binding="{Binding Reporter}" Width="160"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
-                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="160" MinWidth="100"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" MinWidth="200"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="140" MinWidth="80"/>
-                <DataGridTextColumn Header="Created At" Binding="{Binding CreatedAt}" Width="180" MinWidth="120"/>
+                <DataGridTextColumn Header="Issue ID" Binding="{Binding IssueID}" />
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" />
+                <DataGridTextColumn Header="Province" Binding="{Binding Province}" />
+                
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+              
+                <DataGridTextColumn Header="Reported On" Binding="{Binding DateReported}" />
+                <DataGridTextColumn Header="SLA Deadline" Binding="{Binding SLADeadline}" />
+             
+                <DataGridTextColumn Header="Feedback" Binding="{Binding Feedback}" />
+      
+
             </DataGrid.Columns>
         </DataGrid>
 

@@ -28,6 +28,13 @@ namespace MunicipalServicesApp
             this.Close();
         }
 
+        private void btnReportManagement_Click(object sender, RoutedEventArgs e)
+        {
+            ReportManagement reportWindow = new ReportManagement();
+            reportWindow.Show();
+        }
+
+
         private void btnServiceStatus_Click(object sender, RoutedEventArgs e)
         {
             ServiceStatus statusWindow = new ServiceStatus();

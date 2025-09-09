@@ -32,6 +32,7 @@ namespace MunicipalServicesApp
         {
             ReportManagement reportWindow = new ReportManagement();
             reportWindow.Show();
+            this.Close(); // Optional: Close MainWindow if you want
         }
 
 

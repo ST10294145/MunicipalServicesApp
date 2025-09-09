@@ -27,11 +27,12 @@
                     Click="Button_Click"/>
 
             <Button x:Name="btnReportManagement" 
-                      Content="View Reports" 
-                      Height="40" FontSize="16"
-                      Background="Orange" Foreground="White"
-                      Margin="0,0,0,15"
-                      Click="Button_Click"/>
+        Content="View Reports" 
+        Height="40" FontSize="16"
+        Background="Orange" Foreground="White"
+        Margin="0,0,0,15"
+        Click="btnReportManagement_Click"/>
+
 
             <Button x:Name="btnLocalEvents" 
                     Content="📅 Local Events &amp; Announcements" 

@@ -12,6 +12,7 @@
         public string StreetAddress { get; set; } // Street address of the issue
         public string Category { get; set; } // Category of the issue (e.g., Pothole, Streetlight)
         public string FilePath { get; set; } // Path to the associated file (e.g., image)
+        public string FileName { get; set; } // Name of the associated file (e.g., image)
         public string Feedback { get; set; } // Feedback or comments on the issue
         public string Status { get; set; } // Current status of the issue (e.g., Open, In Progress, Resolved)
         public DateTime DateReported { get; set; } // Date when the issue was reported

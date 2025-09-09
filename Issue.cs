@@ -8,6 +8,7 @@
         public string Reporter { get; set; } // Name of the person reporting the issue
         public string Email { get; set; } // Email of the reporter
         public string Province { get; set; } // Province where the issue is located
+        public string City { get; set; } // City where the issue is located
         public string StreetAddress { get; set; } // Street address of the issue
         public string Category { get; set; } // Category of the issue (e.g., Pothole, Streetlight)
         public string FilePath { get; set; } // Path to the associated file (e.g., image)

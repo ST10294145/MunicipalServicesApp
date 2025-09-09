@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;  // ✅ Needed for OpenFileDialog
 
 namespace MunicipalServicesApp
 {
@@ -36,7 +37,7 @@ namespace MunicipalServicesApp
                 Email = txtEmail.Text,
                 Province = selectedProvince,
                 Category = selectedCategory,
-                FilePath = selectedFilePath,  // Attach file path if uploaded
+                FilePath = selectedFilePath,  // ✅ stores attached file path
                 Feedback = "",
                 Status = "Received",
                 DateReported = DateTime.Now,
@@ -76,6 +77,22 @@ namespace MunicipalServicesApp
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
+        }
+
+        //File attachment logic
+        private void AttachFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Select a file to attach",
+                Filter = "All Files (*.*)|*.*"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                selectedFilePath = openFileDialog.FileName; // Save full path
+                txtFilePath.Text = System.IO.Path.GetFileName(selectedFilePath); // Show file name only in UI
+            }
         }
     }
 }

@@ -36,6 +36,8 @@ namespace MunicipalServicesApp
                 Reporter = txtName.Text,
                 Email = txtEmail.Text,
                 Province = selectedProvince,
+                City = txtCity.Text,
+                StreetAddress = txtStreetAddress.Text,
                 Category = selectedCategory,
                 FilePath = selectedFilePath,  // ✅ stores attached file path
                 Feedback = "",

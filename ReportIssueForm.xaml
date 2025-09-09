@@ -45,15 +45,15 @@
                     <ComboBoxItem Content="Western Cape"/>
                 </ComboBox>
 
-                <!-- Street Address -->
-                <Label Content="Street Address:"/>
-                <TextBox x:Name="txtStreetAddress" Height="30" Margin="0,0,0,10"/>
-
-
                 <!-- City -->
                 <Label Content="City:"/>
                 <TextBox x:Name="txtCity" Height="30" Margin="0,0,0,10"/>
 
+                <!-- Street Address -->
+                <Label Content="Street Address:"/>
+                <TextBox x:Name="txtStreetAddress" Height="30" Margin="0,0,0,10"/>
+
+      
                 <!-- Category -->
                 <Label Content="Category:" FontWeight="Bold" Margin="0,0,0,5"/>
                 <ComboBox x:Name="cmbCategory" Height="30" Margin="0,0,0,15">

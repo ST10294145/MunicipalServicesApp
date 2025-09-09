@@ -2,17 +2,18 @@
 {
     public class Issue
     {
-        public int IssueID { get; set; }   // ✅ use this instead of Id
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Reporter { get; set; }
-        public string Email { get; set; }
-        public string Province { get; set; }
-        public string Category { get; set; }
-        public string FilePath { get; set; }
-        public string Feedback { get; set; }
-        public string Status { get; set; }
-        public DateTime DateReported { get; set; }
-        public DateTime SLADeadline { get; set; }
+        public int IssueID { get; set; }   // ✅ Unique identifier for each issue
+        public string Title { get; set; } // Short title of the issue
+        public string Description { get; set; } // Detailed description of the issue
+        public string Reporter { get; set; } // Name of the person reporting the issue
+        public string Email { get; set; } // Email of the reporter
+        public string Province { get; set; } // Province where the issue is located
+        public string StreetAddress { get; set; } // Street address of the issue
+        public string Category { get; set; } // Category of the issue (e.g., Pothole, Streetlight)
+        public string FilePath { get; set; } // Path to the associated file (e.g., image)
+        public string Feedback { get; set; } // Feedback or comments on the issue
+        public string Status { get; set; } // Current status of the issue (e.g., Open, In Progress, Resolved)
+        public DateTime DateReported { get; set; } // Date when the issue was reported
+        public DateTime SLADeadline { get; set; } // Service Level Agreement deadline for resolving the issue
     }
 }

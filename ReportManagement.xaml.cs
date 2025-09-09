@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MunicipalServicesApp
 {
-    /// <summary>
-    /// Interaction logic for ReportManagement.xaml
-    /// </summary>
     public partial class ReportManagement : Window
     {
         public ReportManagement()
         {
             InitializeComponent();
+            LoadIssues();
+        }
+
+        private void LoadIssues()
+        {
+            // Get all issues from the global IssueList
+            var issueList = ((App)Application.Current).IssueList;
+            List<Issue> allIssues = issueList.GetAllIssues();
+
+            // Bind to DataGrid
+            dgIssues.ItemsSource = allIssues;
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

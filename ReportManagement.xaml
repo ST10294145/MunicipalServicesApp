@@ -42,6 +42,7 @@
                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
                 <DataGridTextColumn Header="Reported On" Binding="{Binding DateReported}" />
                 <DataGridTextColumn Header="SLA Deadline" Binding="{Binding SLADeadline}" />
+                <DataGridTextColumn Header="Attachment" Binding="{Binding FileName}" />
                 <DataGridTextColumn Header="Feedback" Binding="{Binding Feedback}" />
             </DataGrid.Columns>
         </DataGrid>

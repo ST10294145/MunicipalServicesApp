@@ -28,7 +28,7 @@ namespace MunicipalServicesApp
             string selectedCategory = (cmbCategory.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Other";
             string selectedProvince = (cmbProvince.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Unknown";
 
-            // Create a new Issue object
+            // ✅ Create a new Issue object with attachment info
             Issue newIssue = new Issue
             {
                 Title = txtTitle.Text,
@@ -39,7 +39,10 @@ namespace MunicipalServicesApp
                 City = txtCity.Text,
                 StreetAddress = txtStreetAddress.Text,
                 Category = selectedCategory,
-                FilePath = selectedFilePath,  // ✅ stores attached file path
+                FilePath = selectedFilePath,
+                FileName = string.IsNullOrEmpty(selectedFilePath)
+                           ? "No file attached"
+                           : System.IO.Path.GetFileName(selectedFilePath), // ✅ Store file name
                 Feedback = "",
                 Status = "Received",
                 DateReported = DateTime.Now,
@@ -81,7 +84,7 @@ namespace MunicipalServicesApp
             this.Close();
         }
 
-        //File attachment logic
+        // ✅ File attachment logic
         private void AttachFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog

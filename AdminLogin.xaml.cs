@@ -1,27 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace MunicipalServicesApp
 {
-    /// <summary>
-    /// Interaction logic for AdminLogin.xaml
-    /// </summary>
     public partial class AdminLogin : Window
     {
         public AdminLogin()
         {
             InitializeComponent();
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Password; // PasswordBox requires .Password
+
+            // 🔑 Seeded credentials
+            string seedUser = "admin";
+            string seedPass = "admin123";
+
+            if (username == seedUser && password == seedPass)
+            {
+                MessageBox.Show("Login successful!", "Admin Login", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Open the admin report management window (for feedback, etc.)
+                ReportManagement reportWindow = new ReportManagement();
+                reportWindow.Show();
+
+                this.Close(); // close login window
+            }
+            else
+            {
+                MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

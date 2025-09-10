@@ -62,7 +62,7 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
 1. Clone the repository:
 
    ```bash
-   git clone <your-repo-url>
+   git clone <https://github.com/ST10294145/MunicipalServicesApp.git>
    ```
 
 2. Open the solution in **Visual Studio**.

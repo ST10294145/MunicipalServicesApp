@@ -1,12 +1,20 @@
 ﻿<Window x:Class="MunicipalServicesApp.FeedbackWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MunicipalServicesApp"
-        mc:Ignorable="d"
-        Title="FeedbackWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="Add Feedback" Height="200" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBox x:Name="txtFeedback" AcceptsReturn="True" TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto" />
+
+        <Button Content="Save Feedback"
+                Grid.Row="1" Height="35" Width="150"
+                HorizontalAlignment="Right"
+                Margin="0,10,0,0"
+                Click="SaveFeedback_Click"/>
     </Grid>
 </Window>

@@ -22,11 +22,8 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header -->
             <RowDefinition Height="*"/>
-            <!-- DataGrid -->
             <RowDefinition Height="Auto"/>
-            <!-- Back button -->
         </Grid.RowDefinitions>
 
         <!-- Header -->

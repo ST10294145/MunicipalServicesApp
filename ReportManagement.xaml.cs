@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace MunicipalServicesApp
@@ -10,17 +10,37 @@ namespace MunicipalServicesApp
         public ReportManagement()
         {
             InitializeComponent();
-            LoadIssues();
+            dgIssues.ItemsSource = ((App)Application.Current).IssueList.GetAllIssues();
         }
 
-        private void LoadIssues()
+        private void dgIssues_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            // Get all issues from the global IssueList
-            var issueList = ((App)Application.Current).IssueList;
-            List<Issue> allIssues = issueList.GetAllIssues();
+            if (dgIssues.SelectedItem is not Issue issue) return;
+            if (dgIssues.CurrentColumn is not DataGridColumn column) return;
 
-            // Bind to DataGrid
-            dgIssues.ItemsSource = allIssues;
+            string header = column.Header?.ToString();
+
+            // ✅ Only react if they double-click Feedback or Attachment
+            if (header == "Feedback")
+            {
+                FeedbackWindow feedbackWindow = new FeedbackWindow(issue);
+                feedbackWindow.ShowDialog();
+
+                // Refresh DataGrid to show updated feedback
+                dgIssues.Items.Refresh();
+            }
+            else if (header == "Attachment" && !string.IsNullOrEmpty(issue.FilePath))
+            {
+                try
+                {
+                    Process.Start(new ProcessStartInfo(issue.FilePath) { UseShellExecute = true });
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to open the file.", "Error",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
@@ -30,49 +50,14 @@ namespace MunicipalServicesApp
             this.Close();
         }
 
-        // ✅ Handles double-click on a DataGrid row
-        private void dgIssues_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (dgIssues.SelectedItem is Issue selectedIssue)
-            {
-                // If an attachment exists, try to open it
-                if (!string.IsNullOrEmpty(selectedIssue.FilePath))
-                {
-                    try
-                    {
-                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = selectedIssue.FilePath,
-                            UseShellExecute = true
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Unable to open attachment: " + ex.Message,
-                                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-
-                // Always open Feedback window for admin input
-                FeedbackWindow feedbackWindow = new FeedbackWindow(selectedIssue);
-                feedbackWindow.ShowDialog();
-
-                // Refresh DataGrid so updated feedback shows immediately
-                dgIssues.Items.Refresh();
-            }
-        }
-
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
-            // Show a message to the admin
-            MessageBox.Show("You have successfully logged out.", "Logout", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("You have successfully logged out.", "Logout",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // Close the admin/report window
+            AdminLogin login = new AdminLogin();
+            login.Show();
             this.Close();
-
-            // Open the MainWindow again
-            MainWindow main = new MainWindow();
-            main.Show();
         }
     }
 }

@@ -61,5 +61,15 @@ namespace MunicipalServicesApp
                 dgIssues.Items.Refresh();
             }
         }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            // Close the current window
+            this.Close();
+
+            // Return to MainWindow
+            MainWindow main = new MainWindow();
+            main.Show();
+        }
     }
 }

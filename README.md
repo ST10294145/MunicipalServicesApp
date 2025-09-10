@@ -34,7 +34,7 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
 
 **Admin Side**:
 
-- Login via seeded credentials (`admin/admin123`)
+- Login via seeded credentials (`Username: "admin"/Password: "admin123"`)
 - View all submitted reports in a tabular format
 - Add feedback to individual issues
 - Logout and return to main app without closing the application
@@ -68,7 +68,7 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
 2. Open the solution in **Visual Studio**.
 3. Ensure the project targets **.NET Framework 4.7.2** or higher.
 4. Build the solution.
-5. Run the application (`F5` or "Start Debugging").
+5. Run the application.
 
 ---
 

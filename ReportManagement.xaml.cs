@@ -30,24 +30,35 @@ namespace MunicipalServicesApp
             this.Close();
         }
 
-        // ✅ Handles double-click on a DataGrid row to open attachment
+        // ✅ Handles double-click on a DataGrid row
         private void dgIssues_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (dgIssues.SelectedItem is Issue selectedIssue && !string.IsNullOrEmpty(selectedIssue.FilePath))
+            if (dgIssues.SelectedItem is Issue selectedIssue)
             {
-                try
+                // If an attachment exists, try to open it
+                if (!string.IsNullOrEmpty(selectedIssue.FilePath))
                 {
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    try
                     {
-                        FileName = selectedIssue.FilePath,
-                        UseShellExecute = true
-                    });
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = selectedIssue.FilePath,
+                            UseShellExecute = true
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Unable to open attachment: " + ex.Message,
+                                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Unable to open attachment: " + ex.Message,
-                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+
+                // Always open Feedback window for admin input
+                FeedbackWindow feedbackWindow = new FeedbackWindow(selectedIssue);
+                feedbackWindow.ShowDialog();
+
+                // Refresh DataGrid so updated feedback shows immediately
+                dgIssues.Items.Refresh();
             }
         }
     }

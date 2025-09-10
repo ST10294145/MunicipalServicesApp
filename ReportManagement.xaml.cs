@@ -67,10 +67,10 @@ namespace MunicipalServicesApp
             // Show a message to the admin
             MessageBox.Show("You have successfully logged out.", "Logout", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // Close the current window
+            // Close the admin/report window
             this.Close();
 
-            // Return to MainWindow
+            // Open the MainWindow again
             MainWindow main = new MainWindow();
             main.Show();
         }

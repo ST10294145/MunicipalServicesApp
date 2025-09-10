@@ -9,9 +9,6 @@
 5. [Usage](#usage)
 6. [Admin Functionality](#admin-functionality)
 7. [Data Management](#data-management)
-8. [Screenshots](#screenshots)
-9. [Future Enhancements](#future-enhancements)
-10. [License](#license)
 
 ---
 
@@ -111,18 +108,5 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
 - **In-Memory Storage**: The app uses an `IssueLinkedList` to store all issues during runtime.
 - **No database required**: All data is cleared when the application closes.
 - **Seeded admin login**: Admin credentials are hardcoded for simplicity.
-
+  
 ---
-
-## Screenshots
-
-*(Add screenshots of your app here for clarity, e.g., Main Window, Report Form, Report Management, Feedback Window.)*
-
----
-
-## Future Enhancements
-
-- Integrate a **database (SQLite or SQL Server)** for persistent storage
-- Implement **email notifications** when admin provides feedback
-- Add **user accounts** with authentication for submitting and viewing reports
-- Improve **UI/UX** for mobile responsiveness using MAUI

@@ -64,6 +64,9 @@ namespace MunicipalServicesApp
 
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
+            // Show a message to the admin
+            MessageBox.Show("You have successfully logged out.", "Logout", MessageBoxButton.OK, MessageBoxImage.Information);
+
             // Close the current window
             this.Close();
 

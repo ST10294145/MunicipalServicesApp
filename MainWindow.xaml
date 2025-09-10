@@ -19,7 +19,13 @@
 
         <!-- Buttons -->
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="280">
-            <Button x:Name="btnReportIssues" 
+
+           
+      
+
+
+
+                <Button x:Name="btnReportIssues" 
                     Content="📌 Report Issues" 
                     Height="40" FontSize="16"
                     Background="DarkRed" Foreground="White"
@@ -27,11 +33,11 @@
                     Click="Button_Click"/>
 
             <Button x:Name="btnReportManagement" 
-        Content="👁️ View Reports" 
-        Height="40" FontSize="16"
-        Background="Orange" Foreground="White"
-        Margin="0,0,0,15"
-        Click="btnReportManagement_Click"/>
+                    Content="👁️ View Reports" 
+                    Height="40" FontSize="16"
+                    Background="Orange" Foreground="White"
+                    Margin="0,0,0,15"
+                    Click="btnReportManagement_Click"/>
 
 
             <Button x:Name="btnLocalEvents" 
@@ -48,5 +54,18 @@
                     Click="btnServiceStatus_Click"
                     IsEnabled="False"/>
         </StackPanel>
+
+        <!-- Admin Login Button -->
+        <Button x:Name="btnAdminLogin"
+        Content="Admin Login"
+        Width="100"
+        Height="30"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Bottom"
+        Margin="0,0,45,40"
+        Background="SteelBlue"
+        Foreground="White"
+        Click="btnAdminLogin_Click"/>
+
     </Grid>
 </Window>

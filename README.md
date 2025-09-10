@@ -9,6 +9,7 @@
 5. [Usage](#usage)
 6. [Admin Functionality](#admin-functionality)
 7. [Data Management](#data-management)
+8. [Video Demonstration](#video-demonstration)
 
 ---
 
@@ -110,3 +111,12 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
 - **Seeded admin login**: Admin credentials are hardcoded for simplicity.
   
 ---
+
+## Video Demonstration
+
+[▶️ Watch Demo Video](https://github.com/ST10294145/MunicipalServicesApp/blob/main/demo.mp4)
+
+---
+
+
+

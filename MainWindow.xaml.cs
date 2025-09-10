@@ -42,5 +42,11 @@ namespace MunicipalServicesApp
             statusWindow.Show();
             this.Close();
         }
+
+        private void btnAdminLogin_Click(object sender, RoutedEventArgs e)
+        {
+            AdminLogin loginWindow = new AdminLogin();
+            loginWindow.ShowDialog(); // Opens login as a modal window
+        }
     }
 }

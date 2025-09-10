@@ -1,27 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace MunicipalServicesApp
 {
-    /// <summary>
-    /// Interaction logic for FeedbackWindow.xaml
-    /// </summary>
     public partial class FeedbackWindow : Window
     {
-        public FeedbackWindow()
+        private Issue _issue;
+
+        public FeedbackWindow(Issue issue)
         {
             InitializeComponent();
+            _issue = issue;
+            txtFeedback.Text = issue.Feedback; // Load old feedback if exists
+        }
+
+        private void SaveFeedback_Click(object sender, RoutedEventArgs e)
+        {
+            _issue.Feedback = txtFeedback.Text; // Save new feedback
+            this.Close();
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

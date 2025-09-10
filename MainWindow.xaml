@@ -1,71 +1,62 @@
 ﻿<Window x:Class="MunicipalServicesApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MunicipalServicesApp"
-        mc:Ignorable="d"
-        Title="Municipal Service Portal" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Title="Municipal Service Portal"
+        MinHeight="450" MinWidth="700"
+        Height="500" Width="800"
+        WindowStartupLocation="CenterScreen"
         Background="#f0f4f8">
 
-    <Grid>
+    <Grid Margin="20">
         <!-- Title -->
         <TextBlock Text="Municipal Service Portal"
                    FontSize="28"
                    FontWeight="Bold"
                    Foreground="#2c3e50"
                    HorizontalAlignment="Center"
-                   Margin="0,40,0,0"/>
+                   Margin="0,30,0,0"/>
 
-        <!-- Buttons -->
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="280">
-
-           
-      
-
-
-
-                <Button x:Name="btnReportIssues" 
+        <!-- Main Buttons -->
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+            <Button x:Name="btnReportIssues" 
                     Content="📌 Report Issues" 
-                    Height="40" FontSize="16"
+                    Height="50" FontSize="16"
                     Background="DarkRed" Foreground="White"
                     Margin="0,0,0,15"
                     Click="Button_Click"/>
 
             <Button x:Name="btnReportManagement" 
                     Content="👁️ View Reports" 
-                    Height="40" FontSize="16"
+                    Height="50" FontSize="16"
                     Background="Orange" Foreground="White"
                     Margin="0,0,0,15"
                     Click="btnReportManagement_Click"/>
 
-
             <Button x:Name="btnLocalEvents" 
                     Content="📅 Local Events &amp; Announcements" 
-                    Height="40" FontSize="16"
+                    Height="50" FontSize="16"
                     Background="#bdc3c7" Foreground="White"
                     Margin="0,0,0,15"
                     IsEnabled="False"/>
 
             <Button x:Name="btnServiceStatus" 
                     Content="📊 Service Request Status" 
-                    Height="40" FontSize="16"
+                    Height="50" FontSize="16"
                     Background="LightSkyBlue" Foreground="White"
-                    Click="btnServiceStatus_Click"
                     IsEnabled="False"/>
         </StackPanel>
 
-        <!-- Admin Login Button -->
+        <!-- Admin Login Button (Bottom Right) -->
         <Button x:Name="btnAdminLogin"
-        Content="Admin Login"
-        Width="100"
-        Height="30"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Bottom"
-        Margin="0,0,45,40"
-        Background="SteelBlue"
-        Foreground="White"
-        Click="btnAdminLogin_Click"/>
-
+                Content="Admin Login"
+                Width="120"
+                Height="35"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,20,20"
+                Background="SteelBlue"
+                Foreground="White"
+                FontWeight="Bold"
+                Click="btnAdminLogin_Click"/>
     </Grid>
 </Window>

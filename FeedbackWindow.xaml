@@ -1,17 +1,30 @@
 ﻿<Window x:Class="MunicipalServicesApp.FeedbackWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Feedback" Height="250" Width="400" WindowStartupLocation="CenterScreen">
+        Title="Feedback" MinHeight="250" MinWidth="400" Height="300" Width="450"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
+
+    <!-- Gradient background -->
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFB3E5FC" Offset="0"/>
+            <GradientStop Color="#FFE1F5FE" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Header -->
             <RowDefinition Height="*"/>
+            <!-- Feedback box -->
             <RowDefinition Height="Auto"/>
+            <!-- Buttons -->
         </Grid.RowDefinitions>
 
         <!-- Header -->
         <TextBlock Text="Provide Feedback"
-                   FontSize="20"
+                   FontSize="24"
                    FontWeight="Bold"
                    Foreground="SteelBlue"
                    HorizontalAlignment="Center"
@@ -23,17 +36,73 @@
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto"
+                 Background="White"
+                 BorderBrush="SteelBlue"
+                 BorderThickness="1"
+                 Padding="5"
+                 FontSize="14"
+                 VerticalAlignment="Stretch"
+                 HorizontalAlignment="Stretch"
                  Margin="0,0,0,10"/>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
             <Button Content="Save"
-                    Width="100"
+                    Width="120"
                     Margin="0,0,10,0"
-                    Click="SaveFeedback_Click"/>
+                    Height="35"
+                    Background="SteelBlue"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Click="SaveFeedback_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF1976D2"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
             <Button Content="Cancel"
-                    Width="100"
-                    Click="Cancel_Click"/>
+                    Width="120"
+                    Height="35"
+                    Background="#FFB0BEC5"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Click="Cancel_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF90A4AE"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

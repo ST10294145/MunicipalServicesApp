@@ -5,13 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MunicipalServicesApp"
         mc:Ignorable="d"
-        Title="ReportManagement" Height="450" Width="800" MinHeight="400" MinWidth="600">
+        Title="Report Management"
+        MinHeight="400" MinWidth="600"
+        Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize">
+
+    <!-- Gradient background -->
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFB3E5FC" Offset="0"/>
+            <GradientStop Color="#FFE1F5FE" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Header -->
             <RowDefinition Height="*"/>
-            <!-- DataGrid fills remaining space -->
+            <!-- DataGrid -->
             <RowDefinition Height="Auto"/>
             <!-- Back button -->
         </Grid.RowDefinitions>
@@ -24,7 +37,7 @@
                    HorizontalAlignment="Center"
                    Margin="0,0,0,15"/>
 
-        <!-- Issues Table -->
+        <!-- Issues DataGrid -->
         <DataGrid x:Name="dgIssues"
                   Grid.Row="1"
                   AutoGenerateColumns="False"
@@ -54,27 +67,75 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Back button -->
-        <Button Content="⬅ Back to Main Menu"
-                Grid.Row="2"
-                Width="200" Height="40"
-                HorizontalAlignment="Left"
-                Background="SteelBlue" Foreground="White"
-                FontWeight="SemiBold"
-                Margin="0,10,0,0"
-                Click="Back_Click"/>
+        <!-- Buttons Panel -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <!--Logout Button-->
-        <Button x:Name="btnLogout"
-        Content="Logout"
-        Width="80"
-        Height="30"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Margin="0,10,10,0"
-        Background="Tomato"
-        Foreground="White"
-        Click="btnLogout_Click"/>
+            <!-- Back button -->
+            <Button Content="⬅ Back to Main Menu"
+                    Width="200" Height="40"
+                    HorizontalAlignment="Left"
+                    Background="SteelBlue" Foreground="White"
+                    FontWeight="SemiBold"
+                    Margin="0,10,0,0"
+                    Click="Back_Click"
+                    Grid.Column="0">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF1976D2"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
+            <!-- Logout button -->
+            <Button x:Name="btnLogout"
+                    Content="Logout"
+                    Width="100" Height="35"
+                    Background="Tomato"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,0,0"
+                    Click="btnLogout_Click"
+                    Grid.Column="2">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFD32F2F"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
     </Grid>
 </Window>

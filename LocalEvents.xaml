@@ -5,12 +5,12 @@
 
     <Grid>
         <StackPanel>
-            <TextBox x:Name="txtSearch" 
-                     Width="200" 
-                     Margin="0,0,0,10" 
-                     Text="Search events..." 
-                     Foreground="Gray"
-                     GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus" TextChanged="txtSearch_TextChanged"/>
+            <TextBox x:Name="txtSearch" Width="200" Margin="0,0,0,10" 
+                       Text="Search events..." 
+                       Foreground="Gray"
+                       GotFocus="txtSearch_GotFocus" 
+                       LostFocus="txtSearch_LostFocus"
+                       TextChanged="txtSearch_TextChanged"/>
             <ComboBox x:Name="cmbCategory" Width="200" Margin="0,0,0,10"/>
             <DatePicker x:Name="dpDate" Width="200" Margin="0,0,0,10"/>
             <Button x:Name="btnSearch" Content="Search" Width="100" Click="btnSearch_Click"/>

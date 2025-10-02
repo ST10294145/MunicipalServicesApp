@@ -13,6 +13,9 @@ namespace MunicipalServicesApp
         {
             InitializeComponent();
             LoadEvents();
+
+            txtSearch.TextChanged += txtSearch_TextChanged;
+            cmbCategory.SelectionChanged += CmbCategory_SelectionChanged;
         }
 
         private void LoadEvents()
@@ -48,9 +51,11 @@ namespace MunicipalServicesApp
         // Handles filtering logic
         private void FilterEvents()
         {
+            if (txtSearch == null || cmbCategory == null || dgEvents == null)
+                return;
+
             string searchText = txtSearch.Text.ToLower();
 
-            // Ignore placeholder
             if (searchText == "search events...") searchText = "";
 
             string category = cmbCategory.SelectedItem?.ToString();

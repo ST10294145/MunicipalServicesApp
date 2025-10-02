@@ -36,16 +36,29 @@ namespace MunicipalServicesApp
             dgEvents.ItemsSource = filtered;
         }
 
+       
+
+        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtSearch.Text == "Search events...")
+            {
+                txtSearch.Text = "";
+                txtSearch.Foreground = System.Windows.Media.Brushes.Black;
+            }
+        }
+
+        private void txtSearch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                txtSearch.Text = "Search events...";
+                txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
+            }
+        }
+
         private void txtSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            string searchText = txtSearch.Text.ToLower();
-            string category = cmbCategory.SelectedItem?.ToString();
 
-            var filtered = events.FindAll(ev =>
-                (string.IsNullOrEmpty(searchText) || ev.Title.ToLower().Contains(searchText)) &&
-                (string.IsNullOrEmpty(category) || ev.Category == category));
-
-            dgEvents.ItemsSource = filtered;
         }
     }
 

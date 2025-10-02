@@ -14,7 +14,15 @@
             <ComboBox x:Name="cmbCategory" Width="200" Margin="0,0,0,10"/>
             <DatePicker x:Name="dpDate" Width="200" Margin="0,0,0,10"/>
             <Button x:Name="btnSearch" Content="Search" Width="100" Click="btnSearch_Click"/>
-            <DataGrid x:Name="dgEvents" AutoGenerateColumns="True" Height="200" Margin="0,10,0,10"/>
+            <DataGrid x:Name="dgEvents" Height="200" Margin="0,10,0,10" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                    <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="150"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="120"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="2*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
             <ListBox x:Name="lstRecommendations" Height="100"/>
         </StackPanel>
     </Grid>

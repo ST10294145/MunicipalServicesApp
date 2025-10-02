@@ -37,7 +37,7 @@
                     Height="50" FontSize="16"
                     Background="#bdc3c7" Foreground="White"
                     Margin="0,0,0,15"
-                    IsEnabled="True"/>
+                    IsEnabled="True" Click="btnLocalEvents_Click"/>
             
 
             <Button x:Name="btnServiceStatus" 

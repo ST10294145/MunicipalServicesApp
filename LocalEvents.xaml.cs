@@ -35,6 +35,18 @@ namespace MunicipalServicesApp
 
             dgEvents.ItemsSource = filtered;
         }
+
+        private void txtSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            string searchText = txtSearch.Text.ToLower();
+            string category = cmbCategory.SelectedItem?.ToString();
+
+            var filtered = events.FindAll(ev =>
+                (string.IsNullOrEmpty(searchText) || ev.Title.ToLower().Contains(searchText)) &&
+                (string.IsNullOrEmpty(category) || ev.Category == category));
+
+            dgEvents.ItemsSource = filtered;
+        }
     }
 
     public class EventItem

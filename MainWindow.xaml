@@ -35,7 +35,7 @@
             <Button x:Name="btnLocalEvents" 
                     Content="📅 Local Events &amp; Announcements" 
                     Height="50" FontSize="16"
-                    Background="#bdc3c7" Foreground="White"
+                    Background="Purple" Foreground="White"
                     Margin="0,0,0,15"
                     IsEnabled="True" Click="btnLocalEvents_Click"/>
             

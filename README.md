@@ -16,6 +16,7 @@
 ## Project Overview
 
 The **Municipal Services App** is a WPF desktop application built in C# .NET, designed to streamline municipal issue reporting and management. Citizens can submit reports regarding municipal issues, while administrators can review these reports and provide feedback.
+The **Municipal Services App** now also have a Local Events and Announcments feature.
 
 This app emphasizes simplicity, usability, and quick feedback loops without requiring permanent storage or complex databases.
 

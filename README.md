@@ -119,7 +119,7 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
   <img src="https://img.shields.io/badge/Watch%20Demo%20Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white&labelColor=FF0000" alt="Watch Demo Video" />
 </a>
 
----
+
 
 
 

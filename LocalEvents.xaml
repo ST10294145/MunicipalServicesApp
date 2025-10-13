@@ -1,47 +1,93 @@
 ﻿<Window x:Class="MunicipalServicesApp.LocalEvents"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Local Events and Announcements" Height="500" Width="800">
+        Title="Local Events and Announcements" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
 
-    <Grid Margin="20">
-        <StackPanel>
-            <TextBox x:Name="txtSearch"
-                     Width="300"
-                     Margin="0,0,0,10"
-                     Text="Search events..."
-                     Foreground="Gray"
-                     GotFocus="txtSearch_GotFocus"
-                     LostFocus="txtSearch_LostFocus"
-                     TextChanged="txtSearch_TextChanged"/>
+    <!-- ScrollViewer wraps everything to allow scrolling -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="20">
+            <StackPanel>
 
-            <ComboBox x:Name="cmbCategory" Width="200" Margin="0,0,0,10"/>
-            <DatePicker x:Name="dpDate" Width="200" Margin="0,0,0,10"/>
-            <Button x:Name="btnSearch" Content="Search" Width="120" Click="btnSearch_Click"/>
+                <!-- Back Button -->
+                <Button x:Name="btnBack"
+                        Content="← Back to Main Menu"
+                        Width="180"
+                        Height="35"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,15"
+                        Background="#FF007ACC"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Click="btnBack_Click"/>
 
-            <ListBox x:Name="lstSuggestions"
-         Visibility="Collapsed"
-         Height="100"
-         Margin="10,60,10,0"
-         Background="White"
-         BorderBrush="Gray"
-         BorderThickness="1"
-         MouseLeftButtonUp="lstSuggestions_MouseLeftButtonUp" />
+                <!-- Search Bar -->
+                <TextBox x:Name="txtSearch"
+                         Width="300"
+                         Margin="0,0,0,10"
+                         Text="Search events..."
+                         Foreground="Gray"
+                         GotFocus="txtSearch_GotFocus"
+                         LostFocus="txtSearch_LostFocus"
+                         TextChanged="txtSearch_TextChanged"/>
 
+                <!-- Category Filter -->
+                <ComboBox x:Name="cmbCategory"
+                          Width="200"
+                          Margin="0,0,0,10"/>
 
-            <DataGrid x:Name="dgEvents"
-                      Height="200"
-                      Margin="0,10,0,10"
-                      AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
-                    <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="150"/>
-                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="120"/>
-                    <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="2*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                <!-- Date Filter -->
+                <DatePicker x:Name="dpDate"
+                            Width="200"
+                            Margin="0,0,0,10"/>
 
-            <Label Content="Recommended based on your searches:" FontWeight="Bold"/>
-            <ListBox x:Name="lstRecommendations" Height="100"/>
-        </StackPanel>
-    </Grid>
+                <!-- Search Button -->
+                <Button x:Name="btnSearch"
+                        Content="Search"
+                        Width="120"
+                        Height="35"
+                        Background="#FF28A745"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Margin="0,0,0,10"
+                        Click="btnSearch_Click"/>
+
+                <!-- Suggestions -->
+                <ListBox x:Name="lstSuggestions"
+                         Visibility="Collapsed"
+                         Height="100"
+                         Margin="10,0,10,10"
+                         Background="White"
+                         BorderBrush="Gray"
+                         BorderThickness="1"
+                         MouseLeftButtonUp="lstSuggestions_MouseLeftButtonUp" />
+
+                <!-- DataGrid for Events -->
+                <DataGrid x:Name="dgEvents"
+                          Height="250"
+                          Margin="0,10,0,10"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          GridLinesVisibility="Horizontal"
+                          AlternatingRowBackground="#FFEFEFEF">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                        <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="150"/>
+                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="120"/>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="2*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Recommendations -->
+                <Label Content="Recommended based on your searches:"
+                       FontWeight="Bold"
+                       Margin="0,10,0,5"/>
+                <ListBox x:Name="lstRecommendations"
+                         Height="100"
+                         BorderBrush="Gray"
+                         BorderThickness="1"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Window>

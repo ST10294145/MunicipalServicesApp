@@ -149,6 +149,13 @@ namespace MunicipalServicesApp
             var recent = recentSearches.Take(3);
             MessageBox.Show("Recent Searches:\n" + string.Join("\n", recent));
         }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+        }
     }
 
     // Event class
@@ -167,4 +174,20 @@ namespace MunicipalServicesApp
             Description = description;
         }
     }
+
+            private void ShowRecentSearches()
+        {
+            var recent = recentSearches.Take(3);
+            MessageBox.Show("Recent Searches:\n" + string.Join("\n", recent));
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+        }
+    }
 }
+
+

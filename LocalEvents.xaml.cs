@@ -173,7 +173,7 @@ namespace MunicipalServicesApp
             Date = date;
             Description = description;
         }
-    }
+   
 
             private void ShowRecentSearches()
         {

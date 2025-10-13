@@ -82,7 +82,6 @@ namespace MunicipalServicesApp
             }
         }
 
-        // ✅ Fixed ShowSuggestions method (prevents NullReferenceException)
         private void ShowSuggestions(string text)
         {
             if (lstSuggestions == null)
@@ -158,7 +157,7 @@ namespace MunicipalServicesApp
         }
     }
 
-    // Event class
+    // EventItem class - only stores event data
     public class EventItem
     {
         public string Title { get; set; }
@@ -173,21 +172,5 @@ namespace MunicipalServicesApp
             Date = date;
             Description = description;
         }
-   
-
-            private void ShowRecentSearches()
-        {
-            var recent = recentSearches.Take(3);
-            MessageBox.Show("Recent Searches:\n" + string.Join("\n", recent));
-        }
-
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-            this.Close();
-        }
     }
 }
-
-

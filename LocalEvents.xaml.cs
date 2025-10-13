@@ -9,9 +9,13 @@ namespace MunicipalServicesApp
 {
     public partial class LocalEvents : Window
     {
-        private List<EventItem> events = new List<EventItem>();
-        private HashSet<string> searchHistory = new HashSet<string>();
-        private Stack<string> recentSearches = new Stack<string>();
+        // === Core data structures ===
+        private List<EventItem> events = new List<EventItem>();                 // Main event list
+        private SortedDictionary<DateTime, List<EventItem>> sortedEvents = new SortedDictionary<DateTime, List<EventItem>>(); // Organised by date
+        private Queue<EventItem> upcomingEvents = new Queue<EventItem>();       // Queue for upcoming events
+        private HashSet<string> eventCategories = new HashSet<string>();        // Unique categories
+        private HashSet<string> searchHistory = new HashSet<string>();          // Unique past searches
+        private Stack<string> recentSearches = new Stack<string>();             // Most recent search terms
 
         public LocalEvents()
         {
@@ -22,29 +26,47 @@ namespace MunicipalServicesApp
             cmbCategory.SelectionChanged += CmbCategory_SelectionChanged;
         }
 
+        // === Load all events ===
         private void LoadEvents()
         {
-            // Sample events
+            // Add some sample events
             events.Add(new EventItem("Community Cleanup", "Sanitation", "2025-10-05", "Join the community cleanup event."));
             events.Add(new EventItem("Road Safety Meeting", "Roads", "2025-10-12", "Discussion on road safety improvements."));
             events.Add(new EventItem("Water Supply Update", "Utilities", "2025-10-20", "Announcement about water supply upgrades."));
             events.Add(new EventItem("Park Renovation", "Community", "2025-11-02", "New park benches and garden upgrades."));
+            events.Add(new EventItem("Electricity Maintenance", "Utilities", "2025-10-25", "Scheduled power maintenance notice."));
 
+            // Fill SortedDictionary by date
+            foreach (var ev in events)
+            {
+                DateTime date = DateTime.Parse(ev.Date);
+                if (!sortedEvents.ContainsKey(date))
+                    sortedEvents[date] = new List<EventItem>();
+                sortedEvents[date].Add(ev);
+            }
+
+            // Fill Queue (upcoming events sorted by date)
+            foreach (var ev in events.OrderBy(e => DateTime.Parse(e.Date)))
+                upcomingEvents.Enqueue(ev);
+
+            // Fill unique category set
+            foreach (var ev in events)
+                eventCategories.Add(ev.Category);
+
+            // Display events in the DataGrid
             dgEvents.ItemsSource = events;
 
-            // Populate category filter
+            // Populate category dropdown
             cmbCategory.Items.Add("All");
-            cmbCategory.Items.Add("Sanitation");
-            cmbCategory.Items.Add("Roads");
-            cmbCategory.Items.Add("Utilities");
-            cmbCategory.Items.Add("Community");
+            foreach (var cat in eventCategories)
+                cmbCategory.Items.Add(cat);
             cmbCategory.SelectedIndex = 0;
         }
 
+        // === Filter events when search or category changes ===
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             string searchText = txtSearch.Text.Trim().ToLower();
-
             if (searchText == "search events...") return;
 
             ShowSuggestions(searchText);
@@ -74,7 +96,7 @@ namespace MunicipalServicesApp
 
             dgEvents.ItemsSource = filtered;
 
-            // Record search
+            // Record the search
             if (!string.IsNullOrEmpty(searchText))
             {
                 searchHistory.Add(searchText);
@@ -82,6 +104,7 @@ namespace MunicipalServicesApp
             }
         }
 
+        // === Suggestions dropdown ===
         private void ShowSuggestions(string text)
         {
             if (lstSuggestions == null)
@@ -93,14 +116,8 @@ namespace MunicipalServicesApp
                 return;
             }
 
-            if (events == null)
-            {
-                lstSuggestions.Visibility = Visibility.Collapsed;
-                return;
-            }
-
             var matches = events
-                .Where(ev => !string.IsNullOrEmpty(ev.Title) && ev.Title.ToLower().Contains(text.ToLower()))
+                .Where(ev => ev.Title.ToLower().Contains(text.ToLower()))
                 .Select(ev => ev.Title)
                 .Distinct()
                 .Take(5)
@@ -120,6 +137,7 @@ namespace MunicipalServicesApp
             }
         }
 
+        // === Search box focus ===
         private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
         {
             if (txtSearch.Text == "Search events...")
@@ -143,12 +161,64 @@ namespace MunicipalServicesApp
             FilterEvents();
         }
 
-        private void ShowRecentSearches()
+        // === Show 3 most recent searches ===
+        private void btnRecentSearches_Click(object sender, RoutedEventArgs e)
         {
+            if (recentSearches.Count == 0)
+            {
+                MessageBox.Show("No recent searches yet.");
+                return;
+            }
+
             var recent = recentSearches.Take(3);
             MessageBox.Show("Recent Searches:\n" + string.Join("\n", recent));
         }
 
+        // === Show recommendations based on last search ===
+        private void btnRecommendations_Click(object sender, RoutedEventArgs e)
+        {
+            ShowRecommendations();
+        }
+
+        private void ShowRecommendations()
+        {
+            if (recentSearches.Count == 0)
+            {
+                MessageBox.Show("Search for events to get recommendations!");
+                return;
+            }
+
+            string lastSearch = recentSearches.Peek().ToLower();
+            var recommendations = events
+                .Where(ev => ev.Title.ToLower().Contains(lastSearch) || ev.Description.ToLower().Contains(lastSearch))
+                .Take(3)
+                .ToList();
+
+            if (recommendations.Count > 0)
+            {
+                string recText = string.Join("\n", recommendations.Select(r => "• " + r.Title));
+                MessageBox.Show("Recommended Events based on your last search:\n" + recText);
+            }
+            else
+            {
+                MessageBox.Show("No recommendations found for your last search.");
+            }
+        }
+
+        // === Show upcoming events using Queue ===
+        private void btnUpcoming_Click(object sender, RoutedEventArgs e)
+        {
+            if (upcomingEvents.Count == 0)
+            {
+                MessageBox.Show("No upcoming events.");
+                return;
+            }
+
+            var nextEvents = upcomingEvents.Take(3).Select(ev => $"{ev.Title} on {ev.Date}");
+            MessageBox.Show("Next Upcoming Events:\n" + string.Join("\n", nextEvents));
+        }
+
+        // === Back to main menu ===
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
@@ -157,7 +227,7 @@ namespace MunicipalServicesApp
         }
     }
 
-    // EventItem class - only stores event data
+    // === EventItem class ===
     public class EventItem
     {
         public string Title { get; set; }

@@ -3,71 +3,151 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MunicipalServicesApp
 {
     public partial class LocalEvents : Window
     {
-        private List<Event> allEvents;  // stores all events
-        private List<string> eventSuggestions; // stores event titles for autocomplete
+        private List<EventItem> events = new List<EventItem>();
+        private HashSet<string> searchHistory = new HashSet<string>();
+        private Dictionary<string, List<EventItem>> categoryDictionary = new Dictionary<string, List<EventItem>>();
 
         public LocalEvents()
         {
             InitializeComponent();
+            LoadEvents();
+            LoadCategories();
+            dgEvents.ItemsSource = events;
+        }
 
-            // Initialize data
-            allEvents = new List<Event>
+        // Load sample events
+        private void LoadEvents()
+        {
+            events = new List<EventItem>
             {
-                new Event { Title = "Community Clean-up", Category = "Environment", Date = new DateTime(2025, 10, 15), Description = "Join us for a clean-up event at Central Park." },
-                new Event { Title = "Food Drive", Category = "Charity", Date = new DateTime(2025, 10, 20), Description = "Donate food items for the local shelter." },
-                new Event { Title = "Youth Sports Day", Category = "Recreation", Date = new DateTime(2025, 10, 25), Description = "A fun day of sports for local youth." },
-                new Event { Title = "Town Hall Meeting", Category = "Civic", Date = new DateTime(2025, 11, 1), Description = "Discuss community updates with the mayor." }
+                new EventItem { Title = "Community Clean-up Drive", Category = "Environment", Date = new DateTime(2025, 10, 20), Description = "Join the clean-up effort in your local park." },
+                new EventItem { Title = "Town Hall Meeting", Category = "Community", Date = new DateTime(2025, 10, 25), Description = "Discuss new developments in your area." },
+                new EventItem { Title = "Youth Sports Tournament", Category = "Sports", Date = new DateTime(2025, 11, 02), Description = "Annual soccer and netball tournament for youth." },
+                new EventItem { Title = "Cultural Heritage Day", Category = "Culture", Date = new DateTime(2025, 11, 10), Description = "Celebrate diversity and culture with music and dance." },
+                new EventItem { Title = "Tree Planting Initiative", Category = "Environment", Date = new DateTime(2025, 11, 15), Description = "Help plant trees to combat climate change." }
             };
 
-            eventSuggestions = allEvents.Select(ev => ev.Title).ToList();
-
-            dgEvents.ItemsSource = allEvents;
-            cmbCategory.ItemsSource = allEvents.Select(ev => ev.Category).Distinct().ToList();
-        }
-
-        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtSearch.Text == "Search events...")
+            // Fill category dictionary
+            foreach (var ev in events)
             {
-                txtSearch.Text = "";
-                txtSearch.Foreground = System.Windows.Media.Brushes.Black;
+                if (!categoryDictionary.ContainsKey(ev.Category))
+                    categoryDictionary[ev.Category] = new List<EventItem>();
+
+                categoryDictionary[ev.Category].Add(ev);
             }
         }
 
-        private void txtSearch_LostFocus(object sender, RoutedEventArgs e)
+        private void LoadCategories()
         {
-            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            cmbCategory.Items.Clear();
+            cmbCategory.Items.Add("All");
+            foreach (var cat in categoryDictionary.Keys)
+                cmbCategory.Items.Add(cat);
+            cmbCategory.SelectedIndex = 0;
+        }
+
+        // Search button logic
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            FilterEvents();
+        }
+
+        // Reset all filters
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            txtSearch.Text = "Search events...";
+            txtSearch.Foreground = Brushes.Gray;
+            cmbCategory.SelectedIndex = 0;
+            dpDate.SelectedDate = null;
+            lstSuggestions.Visibility = Visibility.Collapsed;
+            lstSuggestions.ItemsSource = null;
+            dgEvents.ItemsSource = events;
+            lstRecommendations.ItemsSource = null;
+        }
+
+        private void FilterEvents()
+        {
+            if (events == null) return;
+
+            string searchText = txtSearch.Text.ToLower();
+            string selectedCategory = cmbCategory.SelectedItem?.ToString();
+            DateTime? selectedDate = dpDate.SelectedDate;
+
+            var filtered = events.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(searchText) && searchText != "search events...")
+                filtered = filtered.Where(ev => ev.Title.ToLower().Contains(searchText) ||
+                                                ev.Description.ToLower().Contains(searchText));
+
+            if (selectedCategory != null && selectedCategory != "All")
+                filtered = filtered.Where(ev => ev.Category == selectedCategory);
+
+            if (selectedDate.HasValue)
+                filtered = filtered.Where(ev => ev.Date.Date == selectedDate.Value.Date);
+
+            dgEvents.ItemsSource = filtered.ToList();
+
+            // Save search term
+            if (!string.IsNullOrWhiteSpace(searchText) && searchText != "search events...")
             {
-                txtSearch.Text = "Search events...";
-                txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
+                searchHistory.Add(searchText);
+                ShowRecommendations(searchText);
             }
+        }
+
+        private void ShowRecommendations(string keyword)
+        {
+            var recommendations = new List<EventItem>();
+
+            foreach (var term in searchHistory)
+            {
+                foreach (var ev in events)
+                {
+                    if (ev.Title.ToLower().Contains(term) || ev.Description.ToLower().Contains(term))
+                        if (!recommendations.Contains(ev))
+                            recommendations.Add(ev);
+                }
+            }
+
+            lstRecommendations.ItemsSource = recommendations.Take(5).ToList();
         }
 
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Null-safe check to avoid crashes
-            if (txtSearch == null || lstSuggestions == null || allEvents == null)
-                return;
+            if (events == null || txtSearch.Text == "Search events...") return;
+            ShowSuggestions(txtSearch.Text);
+        }
 
-            string searchText = txtSearch.Text.ToLower();
-
-            if (string.IsNullOrWhiteSpace(searchText) || searchText == "search events...")
+        private void ShowSuggestions(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
             {
                 lstSuggestions.Visibility = Visibility.Collapsed;
                 return;
             }
 
-            var matches = eventSuggestions
-                .Where(s => s.ToLower().Contains(searchText))
+            var suggestions = events
+                .Where(ev => ev.Title.ToLower().Contains(text.ToLower()))
+                .Select(ev => ev.Title)
+                .Distinct()
+                .Take(5)
                 .ToList();
 
-            lstSuggestions.ItemsSource = matches;
-            lstSuggestions.Visibility = matches.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            if (suggestions.Any())
+            {
+                lstSuggestions.ItemsSource = suggestions;
+                lstSuggestions.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                lstSuggestions.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void lstSuggestions_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -76,31 +156,26 @@ namespace MunicipalServicesApp
             {
                 txtSearch.Text = lstSuggestions.SelectedItem.ToString();
                 lstSuggestions.Visibility = Visibility.Collapsed;
-                PerformSearch();
+                FilterEvents();
             }
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
         {
-            PerformSearch();
+            if (txtSearch.Text == "Search events...")
+            {
+                txtSearch.Text = "";
+                txtSearch.Foreground = Brushes.Black;
+            }
         }
 
-        private void PerformSearch()
+        private void txtSearch_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (allEvents == null)
-                return;
-
-            string searchText = txtSearch.Text.ToLower();
-            string selectedCategory = cmbCategory.SelectedItem as string;
-            DateTime? selectedDate = dpDate.SelectedDate;
-
-            var filtered = allEvents.Where(ev =>
-                (string.IsNullOrEmpty(searchText) || ev.Title.ToLower().Contains(searchText) || ev.Description.ToLower().Contains(searchText)) &&
-                (string.IsNullOrEmpty(selectedCategory) || ev.Category == selectedCategory) &&
-                (!selectedDate.HasValue || ev.Date.Date == selectedDate.Value.Date)
-            ).ToList();
-
-            dgEvents.ItemsSource = filtered;
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                txtSearch.Text = "Search events...";
+                txtSearch.Foreground = Brushes.Gray;
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -111,7 +186,8 @@ namespace MunicipalServicesApp
         }
     }
 
-    public class Event
+    // Event Data Model
+    public class EventItem
     {
         public string Title { get; set; }
         public string Category { get; set; }
@@ -119,4 +195,3 @@ namespace MunicipalServicesApp
         public string Description { get; set; }
     }
 }
-// testing done need to do reset search

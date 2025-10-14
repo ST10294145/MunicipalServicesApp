@@ -4,7 +4,6 @@
         Title="Local Events and Announcements" Height="500" Width="800"
         WindowStartupLocation="CenterScreen">
 
-    <!-- ScrollViewer wraps everything to allow scrolling -->
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="20">
             <StackPanel>
@@ -41,16 +40,28 @@
                             Width="200"
                             Margin="0,0,0,10"/>
 
-                <!-- Search Button -->
-                <Button x:Name="btnSearch"
-                        Content="Search"
-                        Width="120"
-                        Height="35"
-                        Background="#FF28A745"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Margin="0,0,0,10"
-                        Click="btnSearch_Click"/>
+                <!-- Search Buttons Row -->
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnSearch"
+                            Content="Search"
+                            Width="120"
+                            Height="35"
+                            Background="#FF28A745"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Margin="0,0,10,10"
+                            Click="btnSearch_Click"/>
+
+                    <Button x:Name="btnReset"
+                            Content="Clear Search"
+                            Width="120"
+                            Height="35"
+                            Background="#FFFF5722"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Margin="0,0,0,10"
+                            Click="btnReset_Click"/>
+                </StackPanel>
 
                 <!-- Suggestions -->
                 <ListBox x:Name="lstSuggestions"

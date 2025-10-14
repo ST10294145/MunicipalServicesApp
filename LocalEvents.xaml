@@ -13,16 +13,17 @@
             <StackPanel Grid.RowSpan="2">
 
                 <!-- Add Event Button (Visible only for Admin) -->
+                <!-- Add Event Button (Visible only for Admin) -->
                 <Button x:Name="btnAddEvent"
-                        Content="➕ Add New Event"
-                        Width="180"
-                        Height="35"
-                        Background="#FF007ACC"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Margin="0,0,0,15"
-                        Visibility="Collapsed"
-                        Click="btnAddEvent_Click"/>
+        Content="➕ Add New Event"
+        Width="180"
+        Height="35"
+        Background="#FF007ACC"
+        Foreground="White"
+        FontWeight="Bold"
+        Margin="0,0,0,15"
+        Visibility="Visible"
+        Click="btnAddEvent_Click"/>
 
 
                 <!-- Back Button -->

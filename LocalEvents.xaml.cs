@@ -1,77 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace MunicipalServicesApp
 {
     public partial class LocalEvents : Window
     {
-        private List<EventItem> allEvents = new List<EventItem>();
-        private bool isAdmin = false;
+        private bool isAdmin;
 
-        public LocalEvents(bool adminMode = false)
+        // Example event item class
+        public class EventItem
+        {
+            public string Title { get; set; }
+            public string Category { get; set; }
+            public string Date { get; set; }
+            public string Description { get; set; }
+
+            public EventItem(string title, string category, string date, string description)
+            {
+                Title = title;
+                Category = category;
+                Date = date;
+                Description = description;
+            }
+        }
+
+        private List<EventItem> allEvents = new List<EventItem>();
+
+        public LocalEvents(bool admin = false)
         {
             InitializeComponent();
-            isAdmin = adminMode;
+            isAdmin = admin;
 
-            if (isAdmin)
-            {
-                btnAddEvent.Visibility = Visibility.Visible;
-            }
+            // Show the add-event button if the user is admin
+            btnAddEvent.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;
 
-            // Sample events
-            allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us for a community cleanup."));
-            allEvents.Add(new EventItem("Health Awareness Talk", "Health", "2025-10-22", "Health awareness event."));
-            allEvents.Add(new EventItem("Local Music Festival", "Entertainment", "2025-10-25", "Live music festival in town."));
-
+            // Load some dummy events for testing
+            allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us to clean up the park!"));
+            allEvents.Add(new EventItem("Health Workshop", "Health", "2025-10-22", "Learn about nutrition and fitness."));
             dgEvents.ItemsSource = allEvents;
         }
+
+        private void btnAddEvent_Click(object sender, RoutedEventArgs e)
+        {
+            // Pass the current events list to the AddEventWindow
+            AddEventWindow addWindow = new AddEventWindow(allEvents);
+            addWindow.ShowDialog();
+
+            // Refresh the DataGrid after adding a new event
+            dgEvents.ItemsSource = null;
+            dgEvents.ItemsSource = allEvents;
+        }
+
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void btnAddEvent_Click(object sender, RoutedEventArgs e)
-        {
-            AddEventWindow addWindow = new AddEventWindow(allEvents);
-            addWindow.ShowDialog();
-            dgEvents.Items.Refresh();
-        }
-
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            string searchText = txtSearch.Text.ToLower();
-            string selectedCategory = cmbCategory.SelectedItem?.ToString();
-            DateTime? selectedDate = dpDate.SelectedDate;
-
-            var filtered = allEvents.Where(ev =>
-                (string.IsNullOrWhiteSpace(searchText) || ev.Title.ToLower().Contains(searchText)) &&
-                (selectedCategory == null || ev.Category == selectedCategory) &&
-                (!selectedDate.HasValue || ev.Date == selectedDate.Value.ToString("yyyy-MM-dd"))
-            ).ToList();
-
-            dgEvents.ItemsSource = filtered;
-        }
-
-        private void btnReset_Click(object sender, RoutedEventArgs e)
-        {
-            txtSearch.Text = "";
-            cmbCategory.SelectedIndex = -1;
-            dpDate.SelectedDate = null;
-            dgEvents.ItemsSource = allEvents;
-        }
-
         private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txtSearch.Foreground == Brushes.Gray)
+            if (txtSearch.Text == "Search events...")
             {
                 txtSearch.Text = "";
-                txtSearch.Foreground = Brushes.Black;
+                txtSearch.Foreground = System.Windows.Media.Brushes.Black;
             }
         }
 
@@ -80,18 +74,54 @@ namespace MunicipalServicesApp
             if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = "Search events...";
-                txtSearch.Foreground = Brushes.Gray;
+                txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
             }
         }
 
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Optional: live suggestions can be implemented here
+            // Make sure controls and list are initialized
+            if (txtSearch == null || dgEvents == null || allEvents == null)
+                return;
+
+            string search = txtSearch.Text.ToLower();
+            if (string.IsNullOrWhiteSpace(search) || search == "search events...")
+            {
+                dgEvents.ItemsSource = allEvents;
+                return;
+            }
+
+            var filtered = allEvents.FindAll(ev =>
+                (!string.IsNullOrEmpty(ev.Title) && ev.Title.ToLower().Contains(search)) ||
+                (!string.IsNullOrEmpty(ev.Category) && ev.Category.ToLower().Contains(search))
+            );
+
+            dgEvents.ItemsSource = filtered;
         }
+
+
 
         private void lstSuggestions_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Optional: suggestion click logic
+            // Example: set the search box when suggestion clicked
+            if (lstSuggestions.SelectedItem != null)
+            {
+                txtSearch.Text = lstSuggestions.SelectedItem.ToString();
+            }
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            txtSearch_TextChanged(null, null);
+        }
+
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            txtSearch.Text = "Search events...";
+            txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
+            cmbCategory.SelectedIndex = -1;
+            dpDate.SelectedDate = null;
+            dgEvents.ItemsSource = allEvents;
         }
     }
 }

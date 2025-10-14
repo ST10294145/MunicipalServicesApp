@@ -14,7 +14,7 @@ namespace MunicipalServicesApp
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Password; // PasswordBox requires .Password
 
-            // 🔑 Seeded credentials
+            // Seeded credentials
             string seedUser = "admin";
             string seedPass = "admin123";
 
@@ -22,7 +22,10 @@ namespace MunicipalServicesApp
             {
                 MessageBox.Show("Login successful!", "Admin Login", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Open the admin report management window (for feedback, etc.)
+                // Mark admin as logged in
+                App.IsAdminLoggedIn = true;
+
+                // Open the admin management window (for feedback or reports)
                 ReportManagement reportWindow = new ReportManagement();
                 reportWindow.Show();
 

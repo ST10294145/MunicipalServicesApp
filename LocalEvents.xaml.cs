@@ -3,91 +3,75 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MunicipalServicesApp
 {
     public partial class LocalEvents : Window
     {
         private List<EventItem> allEvents = new List<EventItem>();
-        private List<EventItem> filteredEvents = new List<EventItem>();
-        private string currentUserRole;
+        private bool isAdmin = false;
 
-        public LocalEvents(string role = "User")
+        public LocalEvents(bool adminMode = false)
         {
             InitializeComponent();
-            currentUserRole = role;
+            isAdmin = adminMode;
 
-            // Show Add Event button if admin
-            if (currentUserRole == "Admin")
-                btnAddEvent.Visibility = Visibility.Visible;
-
-            LoadSampleEvents();
-            PopulateCategories();
-            RefreshEventList(allEvents);
-        }
-
-        // --- Step 1: Load initial sample events ---
-        private void LoadSampleEvents()
-        {
-            allEvents = new List<EventItem>
+            if (isAdmin)
             {
-                new EventItem { Title="Community Clean-up", Category="Community", Date=new DateTime(2025,10,20), Description="Join us for a neighbourhood clean-up event." },
-                new EventItem { Title="Tree Planting Drive", Category="Environment", Date=new DateTime(2025,11,01), Description="Help us plant trees around town to improve air quality." },
-                new EventItem { Title="Water Awareness Seminar", Category="Education", Date=new DateTime(2025,11,15), Description="Learn about sustainable water usage and preservation." },
-                new EventItem { Title="Local Market Day", Category="Business", Date=new DateTime(2025,10,25), Description="Support small local businesses and enjoy food, crafts, and music." }
-            };
+                btnAddEvent.Visibility = Visibility.Visible;
+            }
+
+            // Sample events
+            allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us for a community cleanup."));
+            allEvents.Add(new EventItem("Health Awareness Talk", "Health", "2025-10-22", "Health awareness event."));
+            allEvents.Add(new EventItem("Local Music Festival", "Entertainment", "2025-10-25", "Live music festival in town."));
+
+            dgEvents.ItemsSource = allEvents;
         }
 
-        // --- Step 2: Populate categories dynamically ---
-        private void PopulateCategories()
+        private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            var categories = allEvents.Select(e => e.Category).Distinct().ToList();
-            cmbCategory.ItemsSource = categories;
-            cmbCategory.SelectedIndex = -1;
+            this.Close();
         }
 
-        // --- Step 3: Update event grid display ---
-        private void RefreshEventList(List<EventItem> list)
+        private void btnAddEvent_Click(object sender, RoutedEventArgs e)
         {
-            dgEvents.ItemsSource = null;
-            dgEvents.ItemsSource = list;
+            AddEventWindow addWindow = new AddEventWindow(allEvents);
+            addWindow.ShowDialog();
+            dgEvents.Items.Refresh();
         }
 
-        // --- Step 4: Search button click ---
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            string searchTerm = txtSearch.Text.ToLower().Trim();
-            string selectedCategory = cmbCategory.SelectedItem as string;
+            string searchText = txtSearch.Text.ToLower();
+            string selectedCategory = cmbCategory.SelectedItem?.ToString();
             DateTime? selectedDate = dpDate.SelectedDate;
 
-            filteredEvents = allEvents
-                .Where(ev =>
-                    (string.IsNullOrEmpty(searchTerm) || ev.Title.ToLower().Contains(searchTerm) || ev.Description.ToLower().Contains(searchTerm)) &&
-                    (string.IsNullOrEmpty(selectedCategory) || ev.Category == selectedCategory) &&
-                    (!selectedDate.HasValue || ev.Date.Date == selectedDate.Value.Date))
-                .ToList();
+            var filtered = allEvents.Where(ev =>
+                (string.IsNullOrWhiteSpace(searchText) || ev.Title.ToLower().Contains(searchText)) &&
+                (selectedCategory == null || ev.Category == selectedCategory) &&
+                (!selectedDate.HasValue || ev.Date == selectedDate.Value.ToString("yyyy-MM-dd"))
+            ).ToList();
 
-            RefreshEventList(filteredEvents);
+            dgEvents.ItemsSource = filtered;
         }
 
-        // --- Step 5: Reset button click ---
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            txtSearch.Text = "Search events...";
-            txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
+            txtSearch.Text = "";
             cmbCategory.SelectedIndex = -1;
             dpDate.SelectedDate = null;
-            lstSuggestions.Visibility = Visibility.Collapsed;
-            RefreshEventList(allEvents);
+            dgEvents.ItemsSource = allEvents;
         }
 
-        // --- Step 6: Search textbox logic ---
         private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txtSearch.Text == "Search events...")
+            if (txtSearch.Foreground == Brushes.Gray)
             {
                 txtSearch.Text = "";
-                txtSearch.Foreground = System.Windows.Media.Brushes.Black;
+                txtSearch.Foreground = Brushes.Black;
             }
         }
 
@@ -96,72 +80,18 @@ namespace MunicipalServicesApp
             if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = "Search events...";
-                txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
+                txtSearch.Foreground = Brushes.Gray;
             }
         }
 
-        // --- Step 7: Dynamic suggestions ---
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (txtSearch.Text == "Search events..." || string.IsNullOrWhiteSpace(txtSearch.Text))
-            {
-                lstSuggestions.Visibility = Visibility.Collapsed;
-                return;
-            }
-
-            string search = txtSearch.Text.ToLower();
-            var suggestions = allEvents
-                .Where(ev => ev.Title.ToLower().Contains(search))
-                .Select(ev => ev.Title)
-                .Distinct()
-                .ToList();
-
-            if (suggestions.Count > 0)
-            {
-                lstSuggestions.ItemsSource = suggestions;
-                lstSuggestions.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                lstSuggestions.Visibility = Visibility.Collapsed;
-            }
+            // Optional: live suggestions can be implemented here
         }
 
-        // --- Step 8: Handle clicking a suggestion ---
-        private void lstSuggestions_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void lstSuggestions_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (lstSuggestions.SelectedItem != null)
-            {
-                txtSearch.Text = lstSuggestions.SelectedItem.ToString();
-                lstSuggestions.Visibility = Visibility.Collapsed;
-                btnSearch_Click(null, null);
-            }
+            // Optional: suggestion click logic
         }
-
-        // --- Step 9: Admin adds new event ---
-        private void btnAddEvent_Click(object sender, RoutedEventArgs e)
-        {
-            var addWindow = new AddEventWindow(allEvents);
-            addWindow.ShowDialog();
-            RefreshEventList(allEvents);
-            PopulateCategories();
-        }
-
-        // --- Step 10: Back button ---
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow main = new MainWindow(currentUserRole);
-            main.Show();
-            this.Close();
-        }
-    }
-
-    // --- Supporting Event class ---
-    public class EventItem
-    {
-        public string Title { get; set; }
-        public string Category { get; set; }
-        public DateTime Date { get; set; }
-        public string Description { get; set; }
     }
 }

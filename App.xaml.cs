@@ -9,8 +9,10 @@ namespace MunicipalServicesApp
     /// </summary>
     public partial class App : Application
     {
+        // Global flag to track admin login status
+        public static bool IsAdminLoggedIn = false;
+
         // Custom linked list shared across all windows
         public IssueLinkedList IssueList { get; } = new IssueLinkedList();
     }
-
 }

@@ -7,10 +7,14 @@
         <StackPanel>
             <TextBlock Text="Add New Event" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
 
-            <TextBox x:Name="txtTitle" PlaceholderText="Event Title" Margin="0,0,0,10"/>
-            <TextBox x:Name="txtCategory" PlaceholderText="Category" Margin="0,0,0,10"/>
+            <!-- Use TextBox with default text + events for placeholder effect -->
+            <TextBox x:Name="txtTitle" Text="Event Title" Foreground="Gray" Margin="0,0,0,10"
+                     GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+            <TextBox x:Name="txtCategory" Text="Category" Foreground="Gray" Margin="0,0,0,10"
+                     GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
             <DatePicker x:Name="dpDate" Margin="0,0,0,10"/>
-            <TextBox x:Name="txtDescription" PlaceholderText="Description" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,20"/>
+            <TextBox x:Name="txtDescription" Text="Description" Foreground="Gray" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,20"
+                     GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Save" Width="100" Margin="5" Click="btnSave_Click"/>

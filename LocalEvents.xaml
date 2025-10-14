@@ -1,12 +1,29 @@
 ﻿<Window x:Class="MunicipalServicesApp.LocalEvents"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Local Events and Announcements" Height="500" Width="800"
+        Title="Local Events and Announcements" Height="920" Width="800"
         WindowStartupLocation="CenterScreen">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="20">
-            <StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="23*"/>
+                <RowDefinition Height="7*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.RowSpan="2">
+
+                <!-- Add Event Button (Visible only for Admin) -->
+                <Button x:Name="btnAddEvent"
+                        Content="➕ Add New Event"
+                        Width="180"
+                        Height="35"
+                        Background="#FF007ACC"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Margin="0,0,0,15"
+                        Visibility="Collapsed"
+                        Click="btnAddEvent_Click"/>
+
 
                 <!-- Back Button -->
                 <Button x:Name="btnBack"

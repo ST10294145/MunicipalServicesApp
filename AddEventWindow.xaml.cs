@@ -1,27 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MunicipalServicesApp
 {
-    /// <summary>
-    /// Interaction logic for AddEventWindow.xaml
-    /// </summary>
     public partial class AddEventWindow : Window
     {
-        public AddEventWindow()
+        private List<EventItem> eventList;
+
+        // ✅ Constructor that accepts event list (fixes your CS1729)
+        public AddEventWindow(List<EventItem> allEvents)
         {
             InitializeComponent();
+            eventList = allEvents;
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtTitle.Text) ||
+                string.IsNullOrWhiteSpace(txtCategory.Text) ||
+                dpDate.SelectedDate == null ||
+                string.IsNullOrWhiteSpace(txtDescription.Text))
+            {
+                MessageBox.Show("Please fill in all fields before saving.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var newEvent = new EventItem
+            {
+                Title = txtTitle.Text.Trim(),
+                Category = txtCategory.Text.Trim(),
+                Date = dpDate.SelectedDate.Value,
+                Description = txtDescription.Text.Trim()
+            };
+
+            eventList.Add(newEvent);
+            MessageBox.Show("New event added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -38,18 +38,14 @@ namespace MunicipalServicesApp
             allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us to clean up the park!"));
             allEvents.Add(new EventItem("Health Workshop", "Health", "2025-10-22", "Learn about nutrition and fitness."));
 
+            // Populate category ComboBox with existing categories
+            UpdateCategoryFilter();
+
+            // Bind events to DataGrid
             dgEvents.ItemsSource = allEvents;
 
-            PopulateCategoryFilter();
-        }
-
-        private void PopulateCategoryFilter()
-        {
-            // Get all unique categories
-            var categories = allEvents.Select(ev => ev.Category).Distinct().ToList();
-            categories.Insert(0, "All Categories"); // optional default item
-            cmbCategory.ItemsSource = categories;
-            cmbCategory.SelectedIndex = 0;
+            // Category selection changed handler
+            cmbCategory.SelectionChanged += cmbCategory_SelectionChanged;
         }
 
         private void btnAddEvent_Click(object sender, RoutedEventArgs e)
@@ -63,10 +59,12 @@ namespace MunicipalServicesApp
             AddEventWindow addWindow = new AddEventWindow(allEvents); // pass current events
             addWindow.ShowDialog();
 
-            // Refresh DataGrid and category filter after adding a new event
+            // Refresh DataGrid after adding a new event
             dgEvents.ItemsSource = null;
             dgEvents.ItemsSource = allEvents;
-            PopulateCategoryFilter();
+
+            // Update category filter with new categories
+            UpdateCategoryFilter();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -97,21 +95,14 @@ namespace MunicipalServicesApp
             if (dgEvents == null || allEvents == null) return;
 
             string search = txtSearch.Text.ToLower();
-            IEnumerable<EventItem> filtered = allEvents;
+            string selectedCategory = cmbCategory.SelectedItem as string;
 
-            if (!string.IsNullOrWhiteSpace(search) && search != "search events...")
-            {
-                filtered = filtered.Where(ev => ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search));
-            }
+            var filtered = allEvents.Where(ev =>
+                (string.IsNullOrWhiteSpace(search) || search == "search events..." || ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search))
+                && (string.IsNullOrWhiteSpace(selectedCategory) || ev.Category == selectedCategory)
+            ).ToList();
 
-            // Filter by category if selected and not "All Categories"
-            if (cmbCategory.SelectedItem != null && cmbCategory.SelectedItem.ToString() != "All Categories")
-            {
-                string selectedCategory = cmbCategory.SelectedItem.ToString();
-                filtered = filtered.Where(ev => ev.Category == selectedCategory);
-            }
-
-            dgEvents.ItemsSource = filtered.ToList();
+            dgEvents.ItemsSource = filtered;
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -123,9 +114,21 @@ namespace MunicipalServicesApp
         {
             txtSearch.Text = "Search events...";
             txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
-            cmbCategory.SelectedIndex = 0;
+            cmbCategory.SelectedIndex = -1;
             dpDate.SelectedDate = null;
             dgEvents.ItemsSource = allEvents;
+        }
+
+        private void cmbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            txtSearch_TextChanged(null, null);
+        }
+
+        // Updates the ComboBox with all distinct categories
+        private void UpdateCategoryFilter()
+        {
+            var categories = allEvents.Select(ev => ev.Category).Distinct().ToList();
+            cmbCategory.ItemsSource = categories;
         }
     }
 }

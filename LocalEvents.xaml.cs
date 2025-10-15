@@ -9,6 +9,7 @@ namespace MunicipalServicesApp
     {
         private bool isAdmin;
 
+        // Event class
         public class EventItem
         {
             public string Title { get; set; }
@@ -32,10 +33,10 @@ namespace MunicipalServicesApp
             InitializeComponent();
             isAdmin = admin;
 
-            // Show Add Event button only for admin
-            btnAddEvent.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;
+            // Button visible for all users, but only works for admin
+            btnAddEvent.Visibility = Visibility.Visible;
 
-            // Dummy events for testing
+            // Dummy events
             allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us to clean up the park!"));
             allEvents.Add(new EventItem("Health Workshop", "Health", "2025-10-22", "Learn about nutrition and fitness."));
             dgEvents.ItemsSource = allEvents;
@@ -43,9 +44,16 @@ namespace MunicipalServicesApp
 
         private void btnAddEvent_Click(object sender, RoutedEventArgs e)
         {
-            AddEventWindow addWindow = new AddEventWindow(allEvents);
+            if (!isAdmin)
+            {
+                MessageBox.Show("Only admins can add events.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            AddEventWindow addWindow = new AddEventWindow(allEvents); // pass current events
             addWindow.ShowDialog();
 
+            // Refresh DataGrid after adding a new event
             dgEvents.ItemsSource = null;
             dgEvents.ItemsSource = allEvents;
         }
@@ -84,11 +92,14 @@ namespace MunicipalServicesApp
                 return;
             }
 
-            dgEvents.ItemsSource = allEvents.FindAll(ev =>
-                ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search));
+            var filtered = allEvents.FindAll(ev => ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search));
+            dgEvents.ItemsSource = filtered;
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e) => txtSearch_TextChanged(null, null);
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            txtSearch_TextChanged(null, null);
+        }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {

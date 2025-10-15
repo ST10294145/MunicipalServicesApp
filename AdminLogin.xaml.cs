@@ -1,45 +1,62 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MunicipalServicesApp
 {
     public partial class AdminLogin : Window
     {
+        // Replace with your actual admin credentials
+        private const string AdminUsername = "admin";
+        private const string AdminPassword = "password123";
+
         public AdminLogin()
         {
             InitializeComponent();
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsername.Text.Trim();
-            string password = txtPassword.Password; // PasswordBox requires .Password
+            string password = txtPassword.Password;
 
-            // Seeded credentials
-            string seedUser = "admin";
-            string seedPass = "admin123";
-
-            if (username == seedUser && password == seedPass)
+            if (username == AdminUsername && password == AdminPassword)
             {
                 MessageBox.Show("Login successful!", "Admin Login", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // Mark admin as logged in
-                App.IsAdminLoggedIn = true;
-
-                // Open the admin management window (for feedback or reports)
-                ReportManagement reportWindow = new ReportManagement();
-                reportWindow.Show();
-
-                this.Close(); // close login window
+                this.DialogResult = true; // Important: signals MainWindow that login succeeded
+                this.Close();
             }
             else
             {
-                MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Incorrect username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = false;
             this.Close();
+        }
+
+        // Placeholder effect for Username TextBox
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (tb != null && tb.Text == "Username")
+            {
+                tb.Text = "";
+                tb.Foreground = Brushes.Black;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (tb != null && string.IsNullOrWhiteSpace(tb.Text))
+            {
+                tb.Text = "Username";
+                tb.Foreground = Brushes.Gray;
+            }
         }
     }
 }

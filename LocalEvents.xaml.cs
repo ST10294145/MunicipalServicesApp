@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace MunicipalServicesApp
 {
@@ -9,7 +10,6 @@ namespace MunicipalServicesApp
     {
         private bool isAdmin;
 
-        // Event class
         public class EventItem
         {
             public string Title { get; set; }
@@ -33,10 +33,7 @@ namespace MunicipalServicesApp
             InitializeComponent();
             isAdmin = admin;
 
-            // Button visible for all users, but only works for admin
-            btnAddEvent.Visibility = Visibility.Visible;
-
-            // Dummy events
+            // Add dummy events for testing
             allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us to clean up the park!"));
             allEvents.Add(new EventItem("Health Workshop", "Health", "2025-10-22", "Learn about nutrition and fitness."));
             dgEvents.ItemsSource = allEvents;
@@ -46,7 +43,7 @@ namespace MunicipalServicesApp
         {
             if (!isAdmin)
             {
-                MessageBox.Show("Only admins can add events.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Access Denied. Only admins can add events.", "Permission Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

@@ -11,6 +11,24 @@ namespace MunicipalServicesApp
             InitializeComponent();
         }
 
+        private void btnAdminLogin_Click(object sender, RoutedEventArgs e)
+        {
+            AdminLogin loginWindow = new AdminLogin();
+            bool? result = loginWindow.ShowDialog(); // Modal login
+            if (result == true)
+            {
+                // Admin successfully logged in
+                isAdmin = true;
+            }
+        }
+
+        private void btnLocalEvents_Click(object sender, RoutedEventArgs e)
+        {
+            LocalEvents eventsWindow = new LocalEvents(isAdmin);
+            eventsWindow.ShowDialog();
+        }
+
+        // Other buttons...
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ReportIssueForm reportWindow = new ReportIssueForm();
@@ -30,24 +48,6 @@ namespace MunicipalServicesApp
             ServiceStatus statusWindow = new ServiceStatus();
             statusWindow.Show();
             this.Close();
-        }
-
-        private void btnAdminLogin_Click(object sender, RoutedEventArgs e)
-        {
-            AdminLogin loginWindow = new AdminLogin();
-            bool? result = loginWindow.ShowDialog(); // Modal login
-            if (result == true)
-            {
-                // Admin successfully logged in
-                isAdmin = true;
-            }
-        }
-
-        private void btnLocalEvents_Click(object sender, RoutedEventArgs e)
-        {
-            // Pass the admin flag to LocalEvents
-            LocalEvents eventsform = new LocalEvents(isAdmin);
-            eventsform.ShowDialog();
         }
     }
 }

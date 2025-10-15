@@ -8,7 +8,7 @@
         <Grid Margin="20">
             <StackPanel>
 
-                <!-- Add Event Button (Visible only for Admin) -->
+                <!-- Add Event Button (Visible to all, access restricted in code) -->
                 <Button x:Name="btnAddEvent"
                         Content="➕ Add New Event"
                         Width="180"
@@ -17,7 +17,6 @@
                         Foreground="White"
                         FontWeight="Bold"
                         Margin="0,0,0,15"
-                        Visibility="Visible"
                         Click="btnAddEvent_Click"/>
 
                 <!-- Back Button -->

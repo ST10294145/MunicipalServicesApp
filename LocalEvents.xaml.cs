@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -36,7 +37,19 @@ namespace MunicipalServicesApp
             // Add dummy events for testing
             allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us to clean up the park!"));
             allEvents.Add(new EventItem("Health Workshop", "Health", "2025-10-22", "Learn about nutrition and fitness."));
+
             dgEvents.ItemsSource = allEvents;
+
+            PopulateCategoryFilter();
+        }
+
+        private void PopulateCategoryFilter()
+        {
+            // Get all unique categories
+            var categories = allEvents.Select(ev => ev.Category).Distinct().ToList();
+            categories.Insert(0, "All Categories"); // optional default item
+            cmbCategory.ItemsSource = categories;
+            cmbCategory.SelectedIndex = 0;
         }
 
         private void btnAddEvent_Click(object sender, RoutedEventArgs e)
@@ -50,9 +63,10 @@ namespace MunicipalServicesApp
             AddEventWindow addWindow = new AddEventWindow(allEvents); // pass current events
             addWindow.ShowDialog();
 
-            // Refresh DataGrid after adding a new event
+            // Refresh DataGrid and category filter after adding a new event
             dgEvents.ItemsSource = null;
             dgEvents.ItemsSource = allEvents;
+            PopulateCategoryFilter();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -83,14 +97,21 @@ namespace MunicipalServicesApp
             if (dgEvents == null || allEvents == null) return;
 
             string search = txtSearch.Text.ToLower();
-            if (string.IsNullOrWhiteSpace(search) || search == "search events...")
+            IEnumerable<EventItem> filtered = allEvents;
+
+            if (!string.IsNullOrWhiteSpace(search) && search != "search events...")
             {
-                dgEvents.ItemsSource = allEvents;
-                return;
+                filtered = filtered.Where(ev => ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search));
             }
 
-            var filtered = allEvents.FindAll(ev => ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search));
-            dgEvents.ItemsSource = filtered;
+            // Filter by category if selected and not "All Categories"
+            if (cmbCategory.SelectedItem != null && cmbCategory.SelectedItem.ToString() != "All Categories")
+            {
+                string selectedCategory = cmbCategory.SelectedItem.ToString();
+                filtered = filtered.Where(ev => ev.Category == selectedCategory);
+            }
+
+            dgEvents.ItemsSource = filtered.ToList();
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -102,7 +123,7 @@ namespace MunicipalServicesApp
         {
             txtSearch.Text = "Search events...";
             txtSearch.Foreground = System.Windows.Media.Brushes.Gray;
-            cmbCategory.SelectedIndex = -1;
+            cmbCategory.SelectedIndex = 0;
             dpDate.SelectedDate = null;
             dgEvents.ItemsSource = allEvents;
         }

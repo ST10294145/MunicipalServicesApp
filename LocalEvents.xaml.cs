@@ -96,14 +96,20 @@ namespace MunicipalServicesApp
 
             string search = txtSearch.Text.ToLower();
             string selectedCategory = cmbCategory.SelectedItem as string;
+            DateTime? selectedDate = dpDate.SelectedDate;
 
             var filtered = allEvents.Where(ev =>
+                // Filter by search text
                 (string.IsNullOrWhiteSpace(search) || search == "search events..." || ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search))
+                // Filter by category
                 && (string.IsNullOrWhiteSpace(selectedCategory) || ev.Category == selectedCategory)
+                // Filter by date
+                && (!selectedDate.HasValue || ev.Date == selectedDate.Value.ToString("yyyy-MM-dd"))
             ).ToList();
 
             dgEvents.ItemsSource = filtered;
         }
+
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {

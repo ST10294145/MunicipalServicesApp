@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace MunicipalServicesApp
 {
@@ -10,7 +9,6 @@ namespace MunicipalServicesApp
     {
         private bool isAdmin;
 
-        // Example event item class
         public class EventItem
         {
             public string Title { get; set; }
@@ -34,10 +32,10 @@ namespace MunicipalServicesApp
             InitializeComponent();
             isAdmin = admin;
 
-            // Show the add-event button if the user is admin
+            // Show Add Event button only for admin
             btnAddEvent.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;
 
-            // Load some dummy events for testing
+            // Dummy events for testing
             allEvents.Add(new EventItem("Community Cleanup", "Environment", "2025-10-20", "Join us to clean up the park!"));
             allEvents.Add(new EventItem("Health Workshop", "Health", "2025-10-22", "Learn about nutrition and fitness."));
             dgEvents.ItemsSource = allEvents;
@@ -45,15 +43,12 @@ namespace MunicipalServicesApp
 
         private void btnAddEvent_Click(object sender, RoutedEventArgs e)
         {
-            // Pass the current events list to the AddEventWindow
             AddEventWindow addWindow = new AddEventWindow(allEvents);
             addWindow.ShowDialog();
 
-            // Refresh the DataGrid after adding a new event
             dgEvents.ItemsSource = null;
             dgEvents.ItemsSource = allEvents;
         }
-
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
@@ -80,9 +75,7 @@ namespace MunicipalServicesApp
 
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Make sure controls and list are initialized
-            if (txtSearch == null || dgEvents == null || allEvents == null)
-                return;
+            if (dgEvents == null || allEvents == null) return;
 
             string search = txtSearch.Text.ToLower();
             if (string.IsNullOrWhiteSpace(search) || search == "search events...")
@@ -91,29 +84,11 @@ namespace MunicipalServicesApp
                 return;
             }
 
-            var filtered = allEvents.FindAll(ev =>
-                (!string.IsNullOrEmpty(ev.Title) && ev.Title.ToLower().Contains(search)) ||
-                (!string.IsNullOrEmpty(ev.Category) && ev.Category.ToLower().Contains(search))
-            );
-
-            dgEvents.ItemsSource = filtered;
+            dgEvents.ItemsSource = allEvents.FindAll(ev =>
+                ev.Title.ToLower().Contains(search) || ev.Category.ToLower().Contains(search));
         }
 
-
-
-        private void lstSuggestions_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            // Example: set the search box when suggestion clicked
-            if (lstSuggestions.SelectedItem != null)
-            {
-                txtSearch.Text = lstSuggestions.SelectedItem.ToString();
-            }
-        }
-
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            txtSearch_TextChanged(null, null);
-        }
+        private void btnSearch_Click(object sender, RoutedEventArgs e) => txtSearch_TextChanged(null, null);
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {

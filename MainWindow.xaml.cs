@@ -1,23 +1,14 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace MunicipalServicesApp
 {
     public partial class MainWindow : Window
     {
+        private bool isAdmin = false; // Track if current user is admin
+
         public MainWindow()
         {
             InitializeComponent();
-
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -31,9 +22,8 @@ namespace MunicipalServicesApp
         {
             ReportManagement reportWindow = new ReportManagement();
             reportWindow.Show();
-            this.Close(); // Optional: Close MainWindow if you want
+            this.Close();
         }
-
 
         private void btnServiceStatus_Click(object sender, RoutedEventArgs e)
         {
@@ -45,12 +35,18 @@ namespace MunicipalServicesApp
         private void btnAdminLogin_Click(object sender, RoutedEventArgs e)
         {
             AdminLogin loginWindow = new AdminLogin();
-            loginWindow.ShowDialog(); // Opens login as a modal window
+            bool? result = loginWindow.ShowDialog(); // Modal login
+            if (result == true)
+            {
+                // Admin successfully logged in
+                isAdmin = true;
+            }
         }
 
         private void btnLocalEvents_Click(object sender, RoutedEventArgs e)
         {
-            LocalEvents eventsform = new LocalEvents();
+            // Pass the admin flag to LocalEvents
+            LocalEvents eventsform = new LocalEvents(isAdmin);
             eventsform.ShowDialog();
         }
     }

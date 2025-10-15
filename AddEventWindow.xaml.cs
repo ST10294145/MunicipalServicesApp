@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -16,7 +15,6 @@ namespace MunicipalServicesApp
             this.events = events;
         }
 
-        // Save button click
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtTitle.Text) || txtTitle.Text == "Event Title" ||
@@ -28,7 +26,6 @@ namespace MunicipalServicesApp
                 return;
             }
 
-            // Add new event
             events.Add(new LocalEvents.EventItem(
                 txtTitle.Text,
                 txtCategory.Text,
@@ -39,17 +36,15 @@ namespace MunicipalServicesApp
             this.Close();
         }
 
-        // Cancel button click
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        // Placeholder behavior for TextBoxes
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if (tb != null && (tb.Text == "Event Title" || tb.Text == "Category" || tb.Text == "Description"))
+            if (sender is TextBox tb &&
+                (tb.Text == "Event Title" || tb.Text == "Category" || tb.Text == "Description"))
             {
                 tb.Text = "";
                 tb.Foreground = Brushes.Black;
@@ -58,16 +53,11 @@ namespace MunicipalServicesApp
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if (tb != null && string.IsNullOrWhiteSpace(tb.Text))
+            if (sender is TextBox tb && string.IsNullOrWhiteSpace(tb.Text))
             {
-                if (tb.Name == "txtTitle")
-                    tb.Text = "Event Title";
-                else if (tb.Name == "txtCategory")
-                    tb.Text = "Category";
-                else if (tb.Name == "txtDescription")
-                    tb.Text = "Description";
-
+                if (tb.Name == "txtTitle") tb.Text = "Event Title";
+                else if (tb.Name == "txtCategory") tb.Text = "Category";
+                else if (tb.Name == "txtDescription") tb.Text = "Description";
                 tb.Foreground = Brushes.Gray;
             }
         }

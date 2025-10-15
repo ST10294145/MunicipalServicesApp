@@ -6,25 +6,19 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,59,34">
         <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="23*"/>
-                <RowDefinition Height="7*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Grid.RowSpan="2">
+            <StackPanel>
 
-                <!-- Add Event Button (Visible only for Admin) -->
                 <!-- Add Event Button (Visible only for Admin) -->
                 <Button x:Name="btnAddEvent"
-        Content="➕ Add New Event"
-        Width="180"
-        Height="35"
-        Background="#FF007ACC"
-        Foreground="White"
-        FontWeight="Bold"
-        Margin="0,0,0,15"
-        Visibility="Collapsed"
-        Click="btnAddEvent_Click"/>
-
+                        Content="➕ Add New Event"
+                        Width="180"
+                        Height="35"
+                        Background="#FF007ACC"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Margin="0,0,0,15"
+                        Visibility="Collapsed"
+                        Click="btnAddEvent_Click"/>
 
                 <!-- Back Button -->
                 <Button x:Name="btnBack"
@@ -81,16 +75,6 @@
                             Click="btnReset_Click"/>
                 </StackPanel>
 
-                <!-- Suggestions -->
-                <ListBox x:Name="lstSuggestions"
-                         Visibility="Collapsed"
-                         Height="100"
-                         Margin="10,0,10,10"
-                         Background="White"
-                         BorderBrush="Gray"
-                         BorderThickness="1"
-                         MouseLeftButtonUp="lstSuggestions_MouseLeftButtonUp" />
-
                 <!-- DataGrid for Events -->
                 <DataGrid x:Name="dgEvents"
                           Height="250"
@@ -108,14 +92,6 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <!-- Recommendations -->
-                <Label Content="Recommended based on your searches:"
-                       FontWeight="Bold"
-                       Margin="0,10,0,5"/>
-                <ListBox x:Name="lstRecommendations"
-                         Height="100"
-                         BorderBrush="Gray"
-                         BorderThickness="1"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>

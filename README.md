@@ -89,7 +89,7 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
 1. Click **Admin Login** in the main window (bottom-right corner).
 2. Enter credentials:
     - Username: `admin`
-    - Password: `admin123`
+    - Password: `password123`
 3. View submitted reports in the **Report Management** window.
 4. Double-click a report to open its attached file or provide feedback.
 5. Click **Logout** to return to the main window.

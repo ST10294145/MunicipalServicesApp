@@ -36,7 +36,7 @@ This app emphasizes simplicity, usability, and quick feedback loops without requ
 
 **Admin Side**:
 
-- Login via seeded credentials (`Username: "admin"/Password: "admin123"`)
+- Login via seeded credentials (`Username: "admin"/Password: "password123"`)
 - View all submitted reports in a tabular format
 - Add feedback to individual issues
 - Logout and return to main app without closing the application

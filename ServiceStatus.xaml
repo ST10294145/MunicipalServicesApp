@@ -190,6 +190,17 @@
                            Foreground="#555"/>
 
                 <Button Grid.Column="1"
+                        x:Name="btnAddRequest"
+                        Content="➕ New Request"
+                        Width="130"
+                        Height="35"
+                        Background="#3498db"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Margin="0,0,10,0"
+                        Click="btnAddRequest_Click"/>
+
+                <Button Grid.Column="2"
                         x:Name="btnRefresh"
                         Content="🔄 Refresh"
                         Width="100"
@@ -200,7 +211,7 @@
                         Margin="0,0,10,0"
                         Click="btnRefresh_Click"/>
 
-                <Button Grid.Column="2"
+                <Button Grid.Column="3"
                         x:Name="btnBack"
                         Content="← Back to Menu"
                         Width="150"

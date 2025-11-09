@@ -357,6 +357,34 @@ namespace MunicipalServicesApp
             txtStatistics.Text = stats.ToString();
         }
 
+        private void btnAddRequest_Click(object sender, RoutedEventArgs e)
+        {
+            // Open the Add Service Request window
+            AddServiceRequest addWindow = new AddServiceRequest();
+            bool? result = addWindow.ShowDialog();
+
+            if (result == true && addWindow.RequestSubmitted)
+            {
+                // Get the new request
+                ServiceRequest newRequest = addWindow.NewRequest;
+
+                // Add to all data structures
+                allRequests.Add(newRequest);
+                requestBST.Insert(newRequest);
+                priorityHeap.Insert(newRequest);
+                avlTree.Insert(newRequest.IssueID, newRequest);
+                rbTree.Insert(newRequest.IssueID, newRequest);
+                dependencyGraph.AddNode(newRequest.IssueID, newRequest);
+
+                // Refresh all displays
+                DisplayAllRequests();
+                UpdateStatistics();
+                GenerateDependencyGraphVisualization();
+
+                txtStatusBar.Text = $"New request #{newRequest.IssueID} added successfully!";
+            }
+        }
+
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             DisplayAllRequests();

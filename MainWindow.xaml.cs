@@ -43,11 +43,11 @@ namespace MunicipalServicesApp
             this.Close();
         }
 
-        private void btnServiceStatus_Click(object sender, RoutedEventArgs e)
+        private void btnServiceRequest_Click(object sender, RoutedEventArgs e)
         {
-            ServiceStatus statusWindow = new ServiceStatus();
-            statusWindow.Show();
-            this.Close();
+            AddServiceRequest requestWindow = new AddServiceRequest();
+            requestWindow.Show();
+           
         }
     }
 }

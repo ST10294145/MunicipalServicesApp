@@ -93,7 +93,7 @@ namespace MunicipalServicesApp
                 MessageBoxImage.Information
             );
 
-            this.DialogResult = true;
+            // Close window safely
             this.Close();
         }
 

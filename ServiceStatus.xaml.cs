@@ -10,14 +10,14 @@ namespace MunicipalServicesApp
     public partial class ServiceStatus : Window
     {
         // Data Structures for Part 3
-        private ServiceRequestBST requestBST;
-        private ServiceRequestHeap priorityHeap;
-        private ServiceRequestGraph dependencyGraph;
-        private AVLTree<int, ServiceRequest> avlTree;
-        private RedBlackTree<int, ServiceRequest> rbTree;
+        private ServiceRequestBST requestBST = null!;
+        private ServiceRequestHeap priorityHeap = null!;
+        private ServiceRequestGraph dependencyGraph = null!;
+        private AVLTree<int, ServiceRequest> avlTree = null!;
+        private RedBlackTree<int, ServiceRequest> rbTree = null!;
 
-        private List<ServiceRequest> allRequests;
-        private ServiceRequest selectedRequest;
+        private List<ServiceRequest> allRequests = null!;
+        private ServiceRequest? selectedRequest;
 
         public ServiceStatus()
         {
@@ -361,28 +361,33 @@ namespace MunicipalServicesApp
         {
             // Open the Add Service Request window
             AddServiceRequest addWindow = new AddServiceRequest();
-            bool? result = addWindow.ShowDialog();
 
-            if (result == true && addWindow.RequestSubmitted)
+            // Subscribe to the Closed event to check if request was submitted
+            addWindow.Closed += (s, args) =>
             {
-                // Get the new request
-                ServiceRequest newRequest = addWindow.NewRequest;
+                if (addWindow.RequestSubmitted && addWindow.NewRequest != null)
+                {
+                    // Get the new request
+                    ServiceRequest newRequest = addWindow.NewRequest;
 
-                // Add to all data structures
-                allRequests.Add(newRequest);
-                requestBST.Insert(newRequest);
-                priorityHeap.Insert(newRequest);
-                avlTree.Insert(newRequest.IssueID, newRequest);
-                rbTree.Insert(newRequest.IssueID, newRequest);
-                dependencyGraph.AddNode(newRequest.IssueID, newRequest);
+                    // Add to all data structures
+                    allRequests.Add(newRequest);
+                    requestBST.Insert(newRequest);
+                    priorityHeap.Insert(newRequest);
+                    avlTree.Insert(newRequest.IssueID, newRequest);
+                    rbTree.Insert(newRequest.IssueID, newRequest);
+                    dependencyGraph.AddNode(newRequest.IssueID, newRequest);
 
-                // Refresh all displays
-                DisplayAllRequests();
-                UpdateStatistics();
-                GenerateDependencyGraphVisualization();
+                    // Refresh all displays
+                    DisplayAllRequests();
+                    UpdateStatistics();
+                    GenerateDependencyGraphVisualization();
 
-                txtStatusBar.Text = $"New request #{newRequest.IssueID} added successfully!";
-            }
+                    txtStatusBar.Text = $"New request #{newRequest.IssueID} added successfully!";
+                }
+            };
+
+            addWindow.Show(); // Use Show() instead of ShowDialog()
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)

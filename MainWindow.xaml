@@ -40,11 +40,11 @@
                     IsEnabled="True" Click="btnLocalEvents_Click"/>
             
 
-            <Button x:Name="btnServiceStatus" 
-                    Content="📊 Service Request Status" 
+            <Button x:Name="btnServiceRequest" 
+                    Content="📊 Service Request " 
                     Height="50" FontSize="16"
                     Background="LightSkyBlue" Foreground="White"
-                    IsEnabled="True" Click="btnServiceStatus_Click"/>
+                    IsEnabled="True" Click="btnServiceRequest_Click"/>
         </StackPanel>
 
         <!-- Admin Login Button (Bottom Right) -->

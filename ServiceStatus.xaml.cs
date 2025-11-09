@@ -22,6 +22,13 @@ namespace MunicipalServicesApp
         public ServiceStatus()
         {
             InitializeComponent();
+
+            // Wait for all controls to be loaded
+            Loaded += ServiceStatus_Loaded;
+        }
+
+        private void ServiceStatus_Loaded(object sender, RoutedEventArgs e)
+        {
             InitializeDataStructures();
             LoadSampleData();
             DisplayAllRequests();
@@ -151,25 +158,42 @@ namespace MunicipalServicesApp
 
         private void ApplyFilters()
         {
+            // Safety check - ensure controls are loaded
+            if (allRequests == null || dgServiceRequests == null ||
+                cmbStatusFilter == null || cmbPriorityFilter == null)
+            {
+                return;
+            }
+
             var filtered = allRequests.AsEnumerable();
 
             // Filter by status
-            var selectedStatus = (cmbStatusFilter.SelectedItem as ComboBoxItem)?.Content.ToString();
-            if (selectedStatus != "All Statuses")
+            if (cmbStatusFilter.SelectedItem != null)
             {
-                filtered = filtered.Where(r => r.Status == selectedStatus);
+                var selectedStatus = (cmbStatusFilter.SelectedItem as ComboBoxItem)?.Content.ToString();
+                if (!string.IsNullOrEmpty(selectedStatus) && selectedStatus != "All Statuses")
+                {
+                    filtered = filtered.Where(r => r.Status == selectedStatus);
+                }
             }
 
             // Filter by priority
-            var selectedPriority = (cmbPriorityFilter.SelectedItem as ComboBoxItem)?.Content.ToString();
-            if (selectedPriority != "All Priorities")
+            if (cmbPriorityFilter.SelectedItem != null)
             {
-                filtered = filtered.Where(r => r.Priority == selectedPriority);
+                var selectedPriority = (cmbPriorityFilter.SelectedItem as ComboBoxItem)?.Content.ToString();
+                if (!string.IsNullOrEmpty(selectedPriority) && selectedPriority != "All Priorities")
+                {
+                    filtered = filtered.Where(r => r.Priority == selectedPriority);
+                }
             }
 
             var result = filtered.ToList();
             dgServiceRequests.ItemsSource = result;
-            txtStatusBar.Text = $"Displaying {result.Count} of {allRequests.Count} requests";
+
+            if (txtStatusBar != null)
+            {
+                txtStatusBar.Text = $"Displaying {result.Count} of {allRequests.Count} requests";
+            }
         }
 
         private void dgServiceRequests_SelectionChanged(object sender, SelectionChangedEventArgs e)

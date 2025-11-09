@@ -44,7 +44,7 @@
                     Content="📊 Service Request Status" 
                     Height="50" FontSize="16"
                     Background="LightSkyBlue" Foreground="White"
-                    IsEnabled="False"/>
+                    IsEnabled="True" Click="btnServiceStatus_Click"/>
         </StackPanel>
 
         <!-- Admin Login Button (Bottom Right) -->

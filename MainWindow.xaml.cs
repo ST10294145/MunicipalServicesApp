@@ -4,7 +4,7 @@ namespace MunicipalServicesApp
 {
     public partial class MainWindow : Window
     {
-        private bool isAdmin = false; // Track if current user is admin
+        private bool isAdmin = false; 
 
         public MainWindow()
         {
@@ -14,7 +14,7 @@ namespace MunicipalServicesApp
         private void btnAdminLogin_Click(object sender, RoutedEventArgs e)
         {
             AdminLogin loginWindow = new AdminLogin();
-            bool? result = loginWindow.ShowDialog(); // Modal login
+            bool? result = loginWindow.ShowDialog(); 
             if (result == true)
             {
                 // Admin successfully logged in
@@ -28,7 +28,7 @@ namespace MunicipalServicesApp
             eventsWindow.ShowDialog();
         }
 
-        // Other buttons...
+        // All buttons
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ReportIssueForm reportWindow = new ReportIssueForm();
@@ -48,6 +48,12 @@ namespace MunicipalServicesApp
             AddServiceRequest requestWindow = new AddServiceRequest();
             requestWindow.Show();
            
+        }
+
+        private void btnServiceStatus_Click(object sender, RoutedEventArgs e)
+        {
+            ServiceStatus statusWindow = new ServiceStatus(); 
+            statusWindow.Show();
         }
     }
 }

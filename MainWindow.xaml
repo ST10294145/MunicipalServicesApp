@@ -7,57 +7,78 @@
         WindowStartupLocation="CenterScreen"
         Background="#f0f4f8">
 
-    <Grid Margin="20">
-        <!-- Title -->
-        <TextBlock Text="Municipal Service Portal"
-                   FontSize="28"
-                   FontWeight="Bold"
-                   Foreground="#2c3e50"
-                   HorizontalAlignment="Center"
-                   Margin="0,30,0,0"/>
+    <DockPanel LastChildFill="True">
+        <!-- Navigation Bar --> <!-- Recommended in feedback -->
+        <Border Background="#2c3e50" DockPanel.Dock="Top" Height="60" Padding="10">
+            <DockPanel>
+                <!-- App Title -->
+                <TextBlock Text="Municipal Service Portal"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           DockPanel.Dock="Left"/>
 
-        <!-- Main Buttons -->
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
-            <Button x:Name="btnReportIssues" 
-                    Content="📌 Report Issues" 
-                    Height="50" FontSize="16"
-                    Background="DarkRed" Foreground="White"
-                    Margin="0,0,0,15"
-                    Click="Button_Click"/>
+         
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
-            <Button x:Name="btnReportManagement" 
-                    Content="👁️ View Reports" 
-                    Height="50" FontSize="16"
-                    Background="Orange" Foreground="White"
-                    Margin="0,0,0,15"
-                    Click="btnReportManagement_Click"/>
+                    <!-- Service Status Button -->
+                    <Button x:Name="btnServiveStatus"
+                     Content="Service Status "
+                     Width="120"
+                     Height="35"
+                     Margin="10,0,0,0"
+                     Background="OrangeRed"
+                     Foreground="White"
+                     FontWeight="Bold"
+                     Click="btnServiceStatus_Click"/>
 
-            <Button x:Name="btnLocalEvents" 
-                    Content="📅 Local Events &amp; Announcements" 
-                    Height="50" FontSize="16"
-                    Background="Purple" Foreground="White"
-                    Margin="0,0,0,15"
-                    IsEnabled="True" Click="btnLocalEvents_Click"/>
-            
+                    <!-- Admin Login Button -->
+                    <Button x:Name="btnAdminLogin"
+                     Content="Admin Login"
+                     Width="120"
+                     Height="35"
+                     Margin="10,0,0,0"
+                     Background="SteelBlue"
+                     Foreground="White"
+                     FontWeight="Bold"
+                     Click="btnAdminLogin_Click"/>
 
-            <Button x:Name="btnServiceRequest" 
-                    Content="📊 Service Request " 
-                    Height="50" FontSize="16"
-                    Background="LightSkyBlue" Foreground="White"
-                    IsEnabled="True" Click="btnServiceRequest_Click"/>
-        </StackPanel>
 
-        <!-- Admin Login Button (Bottom Right) -->
-        <Button x:Name="btnAdminLogin"
-                Content="Admin Login"
-                Width="120"
-                Height="35"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0,0,20,20"
-                Background="SteelBlue"
-                Foreground="White"
-                FontWeight="Bold"
-                Click="btnAdminLogin_Click"/>
-    </Grid>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Margin="20">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+                <Button x:Name="btnReportIssues" 
+                        Content="📌 Report Issues" 
+                        Height="50" FontSize="16"
+                        Background="DarkRed" Foreground="White"
+                        Margin="0,0,0,15"
+                        Click="Button_Click"/>
+
+                <Button x:Name="btnReportManagement" 
+                        Content="👁️ View Reports" 
+                        Height="50" FontSize="16"
+                        Background="Orange" Foreground="White"
+                        Margin="0,0,0,15"
+                        Click="btnReportManagement_Click"/>
+
+                <Button x:Name="btnLocalEvents" 
+                        Content="📅 Local Events &amp; Announcements" 
+                        Height="50" FontSize="16"
+                        Background="Purple" Foreground="White"
+                        Margin="0,0,0,15"
+                        Click="btnLocalEvents_Click"/>
+
+                <Button x:Name="btnServiceRequest" 
+                        Content="📊 Service Request Tracker" 
+                        Height="50" FontSize="16"
+                        Background="LightSkyBlue" Foreground="White"
+                        Click="btnServiceRequest_Click"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>

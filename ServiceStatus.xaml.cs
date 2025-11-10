@@ -168,7 +168,7 @@ namespace MunicipalServicesApp
 
                     txtStatusBar.Text = $"Found #{requestId} | BST: {bstTime}μs | AVL: {avlTime}μs | RB: {rbTime}μs | All O(log n)";
 
-                    ((TabControl)((Grid)dgServiceRequests.Parent).Parent).SelectedIndex = 1;
+                    tabServiceRequests.SelectedIndex = 1;
                 }
                 else
                 {

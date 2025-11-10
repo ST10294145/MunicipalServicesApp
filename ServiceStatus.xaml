@@ -91,9 +91,12 @@
             </Grid>
         </Border>
 
-        <!-- Main Content Area with Tabs -->
-        <TabControl Grid.Row="2" Background="White" BorderBrush="#ddd">
-            <!-- Tab 1: Service Requests List -->
+        <!-- Area with Tabs -->
+        <TabControl x:Name="tabServiceRequests" 
+            Grid.Row="2" 
+            Background="White" 
+            BorderBrush="#ddd">
+            <!-- Service Requests List tab -->
             <TabItem Header="📋 All Requests" FontSize="14" FontWeight="SemiBold">
                 <Grid Margin="10">
                     <DataGrid x:Name="dgServiceRequests"
@@ -119,7 +122,7 @@
                 </Grid>
             </TabItem>
 
-            <!-- Tab 2: Request Details -->
+            <!-- Request Details tab -->
             <TabItem Header="📄 Request Details" FontSize="14" FontWeight="SemiBold">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="20">
@@ -131,7 +134,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- Tab 3: Dependency Graph -->
+            <!-- Dependency Graph tab -->
             <TabItem Header="🔗 Dependencies" FontSize="14" FontWeight="SemiBold">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
@@ -157,7 +160,7 @@
                 </Grid>
             </TabItem>
 
-            <!-- Tab 4: Statistics -->
+            <!-- Statistics tab -->
             <TabItem Header="📊 Statistics" FontSize="14" FontWeight="SemiBold">
                 <StackPanel Margin="20">
                     <TextBlock x:Name="txtStatistics" 

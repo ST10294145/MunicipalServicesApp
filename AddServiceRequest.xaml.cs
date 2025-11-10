@@ -93,8 +93,15 @@ namespace MunicipalServicesApp
                 MessageBoxImage.Information
             );
 
-            // Close window safely
-            this.Close();
+            // Try to set DialogResult if opened as modal, otherwise just close
+            try
+            {
+                this.DialogResult = true;
+            }
+            catch
+            {
+                this.Close();
+            }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -109,8 +116,16 @@ namespace MunicipalServicesApp
             if (result == MessageBoxResult.Yes)
             {
                 RequestSubmitted = false;
-                this.DialogResult = false;
-                this.Close();
+
+                // Try to set DialogResult if opened as modal
+                try
+                {
+                    this.DialogResult = false;
+                }
+                catch
+                {
+                    this.Close();
+                }
             }
         }
 

@@ -4,8 +4,179 @@ using System.Linq;
 
 namespace MunicipalServicesApp
 {
- 
-    // BINARY SEARCH TREE
+    // BASIC TREE (N-ary Tree) - Hierarchical Category Organization
+    // Purpose: Organize service categories in parent-child relationships
+    // Time Complexity: O(n) traversal
+    public class BasicTreeNode<T>
+    {
+        public T Data { get; set; }
+        public List<BasicTreeNode<T>> Children { get; set; }
+
+        public BasicTreeNode(T data)
+        {
+            Data = data;
+            Children = new List<BasicTreeNode<T>>();
+        }
+
+        public void AddChild(BasicTreeNode<T> child)
+        {
+            Children.Add(child);
+        }
+    }
+
+    public class BasicTree<T>
+    {
+        public BasicTreeNode<T> Root { get; set; }
+
+        public BasicTree(T rootData)
+        {
+            Root = new BasicTreeNode<T>(rootData);
+        }
+
+        public List<T> Traverse()
+        {
+            List<T> result = new List<T>();
+            TraverseRecursive(Root, result);
+            return result;
+        }
+
+        private void TraverseRecursive(BasicTreeNode<T> node, List<T> result)
+        {
+            if (node != null)
+            {
+                result.Add(node.Data);
+                foreach (var child in node.Children)
+                {
+                    TraverseRecursive(child, result);
+                }
+            }
+        }
+
+        public BasicTreeNode<T> Find(T data)
+        {
+            return FindRecursive(Root, data);
+        }
+
+        private BasicTreeNode<T> FindRecursive(BasicTreeNode<T> node, T data)
+        {
+            if (node == null) return null;
+            if (EqualityComparer<T>.Default.Equals(node.Data, data)) return node;
+
+            foreach (var child in node.Children)
+            {
+                var result = FindRecursive(child, data);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        public int GetHeight()
+        {
+            return GetHeightRecursive(Root);
+        }
+
+        private int GetHeightRecursive(BasicTreeNode<T> node)
+        {
+            if (node == null || node.Children.Count == 0) return 1;
+            return 1 + node.Children.Max(c => GetHeightRecursive(c));
+        }
+    }
+
+
+    // BINARY TREE - Simple Two-Child Structure
+    // Purpose: Binary structure for classification logic
+    // Time Complexity: O(n) search, O(1) insert
+    public class BinaryTreeNode<T>
+    {
+        public T Data { get; set; }
+        public BinaryTreeNode<T> Left { get; set; }
+        public BinaryTreeNode<T> Right { get; set; }
+
+        public BinaryTreeNode(T data)
+        {
+            Data = data;
+            Left = null;
+            Right = null;
+        }
+    }
+
+    public class BinaryTree<T>
+    {
+        public BinaryTreeNode<T> Root { get; set; }
+
+        public BinaryTree(T rootData)
+        {
+            Root = new BinaryTreeNode<T>(rootData);
+        }
+
+        public void Insert(T data)
+        {
+            if (Root == null)
+            {
+                Root = new BinaryTreeNode<T>(data);
+                return;
+            }
+
+            Queue<BinaryTreeNode<T>> queue = new Queue<BinaryTreeNode<T>>();
+            queue.Enqueue(Root);
+
+            while (queue.Count > 0)
+            {
+                BinaryTreeNode<T> current = queue.Dequeue();
+
+                if (current.Left == null)
+                {
+                    current.Left = new BinaryTreeNode<T>(data);
+                    return;
+                }
+                else
+                {
+                    queue.Enqueue(current.Left);
+                }
+
+                if (current.Right == null)
+                {
+                    current.Right = new BinaryTreeNode<T>(data);
+                    return;
+                }
+                else
+                {
+                    queue.Enqueue(current.Right);
+                }
+            }
+        }
+
+        public List<T> InOrder()
+        {
+            List<T> result = new List<T>();
+            InOrderRecursive(Root, result);
+            return result;
+        }
+
+        private void InOrderRecursive(BinaryTreeNode<T> node, List<T> result)
+        {
+            if (node != null)
+            {
+                InOrderRecursive(node.Left, result);
+                result.Add(node.Data);
+                InOrderRecursive(node.Right, result);
+            }
+        }
+
+        public int GetHeight()
+        {
+            return GetHeightRecursive(Root);
+        }
+
+        private int GetHeightRecursive(BinaryTreeNode<T> node)
+        {
+            if (node == null) return 0;
+            return 1 + Math.Max(GetHeightRecursive(node.Left), GetHeightRecursive(node.Right));
+        }
+    }
+
+    // BINARY SEARCH TREE (BST)
+    // Purpose: Fast O(log n) search by Request ID
     public class BSTNode
     {
         public int Key { get; set; }
@@ -95,8 +266,9 @@ namespace MunicipalServicesApp
         }
     }
 
-
-    // AVL TREE IMPLEMENTATION (Self-Balancing BST)
+ 
+    // AVL TREE - Self-Balancing BST
+    // Purpose: Guaranteed O(log n) with automatic balancing
     public class AVLNode<TKey, TValue> where TKey : IComparable<TKey>
     {
         public TKey Key { get; set; }
@@ -139,33 +311,29 @@ namespace MunicipalServicesApp
             }
             else
             {
-                return node; // Duplicate key
+                return node;
             }
 
             node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
 
             int balance = GetBalance(node);
 
-            // Left Left Case
             if (balance > 1 && key.CompareTo(node.Left.Key) < 0)
             {
                 return RotateRight(node);
             }
 
-            // Right Right Case
             if (balance < -1 && key.CompareTo(node.Right.Key) > 0)
             {
                 return RotateLeft(node);
             }
 
-            // Left Right Case
             if (balance > 1 && key.CompareTo(node.Left.Key) > 0)
             {
                 node.Left = RotateLeft(node.Left);
                 return RotateRight(node);
             }
 
-            // Right Left Case
             if (balance < -1 && key.CompareTo(node.Right.Key) < 0)
             {
                 node.Right = RotateRight(node.Right);
@@ -241,7 +409,8 @@ namespace MunicipalServicesApp
         }
     }
 
-    // RED-BLACK TREE IMPLEMENTATION
+    // RED-BLACK TREE - Alternative Self-Balancing BST
+    // Purpose: Fewer rotations than AVL, faster insertions
     public enum RBColor { Red, Black }
 
     public class RBNode<TKey, TValue> where TKey : IComparable<TKey>
@@ -440,7 +609,8 @@ namespace MunicipalServicesApp
         }
     }
 
-    // HEAP IMPLEMENTATION (Max-Heap for Priority Queue)
+    // HEAP - Max-Heap Priority Queue
+    // Purpose: O(1) access to highest priority requests
     public class ServiceRequestHeap
     {
         private List<ServiceRequest> heap;
@@ -540,7 +710,8 @@ namespace MunicipalServicesApp
     }
 
  
-    // GRAPH IMPLEMENTATION (Adjacency List)
+    // GRAPH - Adjacency List with BFS, DFS, MST
+    // Purpose: Model complex request dependencies
     public class GraphEdge
     {
         public int From { get; set; }
@@ -594,14 +765,12 @@ namespace MunicipalServicesApp
 
         public List<GraphEdge> GetMinimumSpanningTree()
         {
-            // Kruskal's Algorithm for MST
             List<GraphEdge> allEdges = new List<GraphEdge>();
             foreach (var kvp in adjacencyList)
             {
                 allEdges.AddRange(kvp.Value);
             }
 
-            // Sort edges by weight
             allEdges = allEdges.OrderBy(e => e.Weight).ToList();
 
             List<GraphEdge> mst = new List<GraphEdge>();
@@ -671,8 +840,9 @@ namespace MunicipalServicesApp
         }
     }
 
-
-    // UNION-FIND (Disjoint Set) for MST
+   
+    // UNION-FIND - For MST Cycle Detection
+    // Purpose: Efficient cycle detection in Kruskal's algorithm
     public class UnionFind
     {
         private int[] parent;
@@ -694,7 +864,7 @@ namespace MunicipalServicesApp
         {
             if (parent[x] != x)
             {
-                parent[x] = Find(parent[x]); // Path compression
+                parent[x] = Find(parent[x]);
             }
             return parent[x];
         }

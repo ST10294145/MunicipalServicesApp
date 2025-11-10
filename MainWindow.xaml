@@ -8,7 +8,7 @@
         Background="#f0f4f8">
 
     <DockPanel LastChildFill="True">
-        <!-- Navigation Bar --> <!-- Recommended in feedback -->
+        <!-- Navigation Bar -->
         <Border Background="#2c3e50" DockPanel.Dock="Top" Height="60" Padding="10">
             <DockPanel>
                 <!-- App Title -->
@@ -19,32 +19,28 @@
                            VerticalAlignment="Center"
                            DockPanel.Dock="Left"/>
 
-         
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-
-                    <!-- Service Status Button -->
-                    <Button x:Name="btnServiveStatus"
-                     Content="Service Status "
-                     Width="120"
-                     Height="35"
-                     Margin="10,0,0,0"
-                     Background="OrangeRed"
-                     Foreground="White"
-                     FontWeight="Bold"
-                     Click="btnServiceStatus_Click"/>
+                    <!-- View Reports Button (moved up here) -->
+                    <Button x:Name="btnReportManagement" 
+                            Content="View Reports" 
+                            Width="120"
+                            Height="35"
+                            Margin="10,0,0,0"
+                            Background="Orange"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="btnReportManagement_Click"/>
 
                     <!-- Admin Login Button -->
                     <Button x:Name="btnAdminLogin"
-                     Content="Admin Login"
-                     Width="120"
-                     Height="35"
-                     Margin="10,0,0,0"
-                     Background="SteelBlue"
-                     Foreground="White"
-                     FontWeight="Bold"
-                     Click="btnAdminLogin_Click"/>
-
-
+                            Content="Admin Login"
+                            Width="120"
+                            Height="35"
+                            Margin="10,0,0,0"
+                            Background="SteelBlue"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="btnAdminLogin_Click"/>
                 </StackPanel>
             </DockPanel>
         </Border>
@@ -59,12 +55,14 @@
                         Margin="0,0,0,15"
                         Click="Button_Click"/>
 
-                <Button x:Name="btnReportManagement" 
-                        Content="👁️ View Reports" 
+                <!-- Service Status moved here -->
+                <Button x:Name="btnServiceStatus"
+                        Content="📊 Service Status Tracker"
                         Height="50" FontSize="16"
-                        Background="Orange" Foreground="White"
+                        Background="OrangeRed"
+                        Foreground="White"
                         Margin="0,0,0,15"
-                        Click="btnReportManagement_Click"/>
+                        Click="btnServiceStatus_Click"/>
 
                 <Button x:Name="btnLocalEvents" 
                         Content="📅 Local Events &amp; Announcements" 
@@ -72,12 +70,6 @@
                         Background="Purple" Foreground="White"
                         Margin="0,0,0,15"
                         Click="btnLocalEvents_Click"/>
-
-                <Button x:Name="btnServiceRequest" 
-                        Content="📊 Service Request Tracker" 
-                        Height="50" FontSize="16"
-                        Background="LightSkyBlue" Foreground="White"
-                        Click="btnServiceRequest_Click"/>
             </StackPanel>
         </Grid>
     </DockPanel>

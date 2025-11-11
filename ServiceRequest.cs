@@ -36,6 +36,19 @@ namespace MunicipalServicesApp
             }
         }
 
+        // Returns numeric value for priority comparison (used by Heap)
+        public int GetPriorityValue()
+        {
+            return Priority switch
+            {
+                "Critical" => 4,
+                "High" => 3,
+                "Medium" => 2,
+                "Low" => 1,
+                _ => 2
+            };
+        }
+
         public ServiceRequest()
         {
             IssueID = string.Empty;

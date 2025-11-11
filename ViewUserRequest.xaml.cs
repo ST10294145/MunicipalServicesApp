@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace MunicipalServicesApp
 {
     /// <summary>
-    /// Interaction logic for AddServiceRequest.xaml
+    /// Interaction logic for ViewUserRequest.xaml
     /// </summary>
-    public partial class AddServiceRequest : Window
+    public partial class ViewUserRequest : Window
     {
-        public AddServiceRequest()
+        public ViewUserRequest()
         {
             InitializeComponent();
         }

@@ -18,7 +18,6 @@ namespace MunicipalServicesApp
         private AVLTree<int, ServiceRequest> avlTree = null!;
         private RedBlackTree<int, ServiceRequest> rbTree = null!;
 
-        private List<ServiceRequest> allRequests = null!;
         private ServiceRequest? selectedRequest;
 
         public ServiceStatus()
@@ -30,10 +29,32 @@ namespace MunicipalServicesApp
         private void ServiceStatus_Loaded(object sender, RoutedEventArgs e)
         {
             InitializeDataStructures();
-            LoadSampleData();
+
+            // Subscribe to new request events from ServiceRequestManager
+            ServiceRequestManager.Instance.RequestAdded += OnRequestAdded;
+
+            // Load all existing requests from ServiceRequestManager into data structures
+            LoadAllRequestsIntoDataStructures();
+
             DisplayAllRequests();
             UpdateStatistics();
             GenerateDependencyGraphVisualization();
+        }
+
+        private void OnRequestAdded(object? sender, ServiceRequest newRequest)
+        {
+            // When a new request is added anywhere in the app, add it to all data structures
+            Dispatcher.Invoke(() =>
+            {
+                AddRequestToDataStructures(newRequest);
+
+                // Refresh all displays
+                DisplayAllRequests();
+                UpdateStatistics();
+                GenerateDependencyGraphVisualization();
+
+                txtStatusBar.Text = $"New request #{newRequest.IssueID} added! Total: {ServiceRequestManager.Instance.AllRequests.Count} requests";
+            });
         }
 
         private void InitializeDataStructures()
@@ -46,7 +67,6 @@ namespace MunicipalServicesApp
             dependencyGraph = new ServiceRequestGraph();
             avlTree = new AVLTree<int, ServiceRequest>();
             rbTree = new RedBlackTree<int, ServiceRequest>();
-            allRequests = new List<ServiceRequest>();
 
             // Build category hierarchy using Basic Tree
             BuildCategoryHierarchy();
@@ -75,65 +95,61 @@ namespace MunicipalServicesApp
             rootNode.AddChild(publicServicesNode);
         }
 
-        private void LoadSampleData()
+        private void LoadAllRequestsIntoDataStructures()
         {
-            var requests = new List<ServiceRequest>
+            // Load all existing requests from ServiceRequestManager
+            foreach (var request in ServiceRequestManager.Instance.AllRequests)
             {
-                new ServiceRequest(1001, "Pothole Repair", "Road Maintenance", "Pending", "High",
-                    new DateTime(2025, 11, 1), "Large pothole on Main Street causing traffic issues"),
-                new ServiceRequest(1002, "Street Light Out", "Utilities", "In Progress", "Medium",
-                    new DateTime(2025, 11, 3), "Street light not working on Oak Avenue"),
-                new ServiceRequest(1003, "Water Leak", "Water Services", "Resolved", "Critical",
-                    new DateTime(2025, 10, 28), "Major water leak affecting multiple homes"),
-                new ServiceRequest(1004, "Illegal Dumping", "Sanitation", "Pending", "Medium",
-                    new DateTime(2025, 11, 5), "Illegal dumping site near residential area"),
-                new ServiceRequest(1005, "Traffic Signal Malfunction", "Traffic Management", "In Progress", "Critical",
-                    new DateTime(2025, 11, 2), "Traffic light stuck on red at intersection"),
-                new ServiceRequest(1006, "Park Maintenance", "Parks & Recreation", "Pending", "Low",
-                    new DateTime(2025, 11, 6), "Broken playground equipment needs repair"),
-                new ServiceRequest(1007, "Sewer Blockage", "Sanitation", "Resolved", "High",
-                    new DateTime(2025, 10, 25), "Sewer blockage causing overflow"),
-                new ServiceRequest(1008, "Noise Complaint", "Public Safety", "Closed", "Low",
-                    new DateTime(2025, 10, 20), "Excessive noise from construction site"),
-                new ServiceRequest(1009, "Graffiti Removal", "Public Works", "In Progress", "Medium",
-                    new DateTime(2025, 11, 4), "Graffiti on public building walls"),
-                new ServiceRequest(1010, "Emergency Bridge Repair", "Infrastructure", "Pending", "Critical",
-                    new DateTime(2025, 11, 7), "Structural damage to pedestrian bridge")
-            };
-
-            // Add to ALL data structures
-            foreach (var request in requests)
-            {
-                allRequests.Add(request);
-                requestBST.Insert(request);
-                priorityHeap.Insert(request);
-                avlTree.Insert(request.IssueID, request);
-                rbTree.Insert(request.IssueID, request);
-
-                // Add to Binary Tree for classification
-                classificationTree.Insert($"{request.Priority}:{request.IssueID}");
+                AddRequestToDataStructures(request);
             }
 
             BuildDependencyGraph();
         }
 
-        private void BuildDependencyGraph()
+        private void AddRequestToDataStructures(ServiceRequest request)
         {
-            foreach (var request in allRequests)
+            // Add to ALL data structures
+            requestBST.Insert(request);
+            priorityHeap.Insert(request);
+            avlTree.Insert(request.IssueID, request);
+            rbTree.Insert(request.IssueID, request);
+
+            // Add to graph if not already there
+            if (!dependencyGraph.HasNode(request.IssueID))
             {
                 dependencyGraph.AddNode(request.IssueID, request);
             }
 
-            dependencyGraph.AddEdge(1003, 1007, 2);
-            dependencyGraph.AddEdge(1005, 1001, 3);
-            dependencyGraph.AddEdge(1001, 1009, 1);
-            dependencyGraph.AddEdge(1007, 1004, 1);
-            dependencyGraph.AddEdge(1010, 1006, 4);
+            // Add to Binary Tree for classification
+            classificationTree.Insert($"{request.Priority}:{request.IssueID}");
+        }
+
+        private void BuildDependencyGraph()
+        {
+            // Build sample dependencies (you can modify this based on your needs)
+            var allRequests = ServiceRequestManager.Instance.AllRequests.ToList();
+
+            if (allRequests.Any(r => r.IssueID == 1003) && allRequests.Any(r => r.IssueID == 1007))
+                dependencyGraph.AddEdge(1003, 1007, 2);
+
+            if (allRequests.Any(r => r.IssueID == 1005) && allRequests.Any(r => r.IssueID == 1001))
+                dependencyGraph.AddEdge(1005, 1001, 3);
+
+            if (allRequests.Any(r => r.IssueID == 1001) && allRequests.Any(r => r.IssueID == 1009))
+                dependencyGraph.AddEdge(1001, 1009, 1);
+
+            if (allRequests.Any(r => r.IssueID == 1007) && allRequests.Any(r => r.IssueID == 1004))
+                dependencyGraph.AddEdge(1007, 1004, 1);
+
+            if (allRequests.Any(r => r.IssueID == 1010) && allRequests.Any(r => r.IssueID == 1006))
+                dependencyGraph.AddEdge(1010, 1006, 4);
         }
 
         private void DisplayAllRequests()
         {
-            dgServiceRequests.ItemsSource = allRequests.OrderBy(r => r.IssueID).ToList();
+            var allRequests = ServiceRequestManager.Instance.AllRequests.OrderBy(r => r.IssueID).ToList();
+            dgServiceRequests.ItemsSource = null;
+            dgServiceRequests.ItemsSource = allRequests;
             txtStatusBar.Text = $"Displaying {allRequests.Count} service requests";
         }
 
@@ -196,13 +212,13 @@ namespace MunicipalServicesApp
 
         private void ApplyFilters()
         {
-            if (allRequests == null || dgServiceRequests == null ||
+            if (ServiceRequestManager.Instance.AllRequests == null || dgServiceRequests == null ||
                 cmbStatusFilter == null || cmbPriorityFilter == null)
             {
                 return;
             }
 
-            var filtered = allRequests.AsEnumerable();
+            var filtered = ServiceRequestManager.Instance.AllRequests.AsEnumerable();
 
             if (cmbStatusFilter.SelectedItem != null)
             {
@@ -223,11 +239,12 @@ namespace MunicipalServicesApp
             }
 
             var result = filtered.ToList();
+            dgServiceRequests.ItemsSource = null;
             dgServiceRequests.ItemsSource = result;
 
             if (txtStatusBar != null)
             {
-                txtStatusBar.Text = $"Displaying {result.Count} of {allRequests.Count} requests";
+                txtStatusBar.Text = $"Displaying {result.Count} of {ServiceRequestManager.Instance.AllRequests.Count} requests";
             }
         }
 
@@ -254,9 +271,13 @@ namespace MunicipalServicesApp
             details.AppendLine($"Status: {request.Status}");
             details.AppendLine($"Priority: {request.Priority}");
             details.AppendLine();
-            details.AppendLine($"Date Reported: {request.DateReported:yyyy-MM-dd}");
+            details.AppendLine($"Reporter: {request.Reporter}");
+            details.AppendLine($"Email: {request.Email}");
+            details.AppendLine($"Location: {request.StreetAddress}");
+            details.AppendLine();
+            details.AppendLine($"Date Reported: {request.DateReported:yyyy-MM-dd HH:mm}");
             details.AppendLine($"Days Open: {request.DaysOpen}");
-            details.AppendLine($"SLA Deadline: {request.SLADeadline:yyyy-MM-dd}");
+            details.AppendLine($"SLA Deadline: {request.SLADeadline:yyyy-MM-dd HH:mm}");
             details.AppendLine();
 
             var dependencies = dependencyGraph.GetDependencies(request.IssueID);
@@ -265,7 +286,7 @@ namespace MunicipalServicesApp
                 details.AppendLine("Dependencies:");
                 foreach (var depId in dependencies)
                 {
-                    var depRequest = allRequests.FirstOrDefault(r => r.IssueID == depId);
+                    var depRequest = ServiceRequestManager.Instance.GetRequestById(depId);
                     if (depRequest != null)
                     {
                         details.AppendLine($"  → Depends on Request #{depId}: {depRequest.Title} ({depRequest.Status})");
@@ -289,7 +310,9 @@ namespace MunicipalServicesApp
             graph.AppendLine("Legend: → = depends on");
             graph.AppendLine();
 
-            foreach (var request in allRequests.OrderBy(r => r.IssueID))
+            var allRequests = ServiceRequestManager.Instance.AllRequests.OrderBy(r => r.IssueID).ToList();
+
+            foreach (var request in allRequests)
             {
                 var dependencies = dependencyGraph.GetDependencies(request.IssueID);
 
@@ -299,7 +322,7 @@ namespace MunicipalServicesApp
                 {
                     foreach (var depId in dependencies)
                     {
-                        var depRequest = allRequests.FirstOrDefault(r => r.IssueID == depId);
+                        var depRequest = ServiceRequestManager.Instance.GetRequestById(depId);
                         if (depRequest != null)
                         {
                             graph.AppendLine($"    → Requires: [{depId}] {depRequest.Title}");
@@ -331,7 +354,6 @@ namespace MunicipalServicesApp
                 graph.Append("  Traversal Order: ");
                 foreach (var id in bfsResult)
                 {
-                    var req = allRequests.FirstOrDefault(r => r.IssueID == id);
                     graph.Append($"[{id}] ");
                 }
                 graph.AppendLine();
@@ -345,7 +367,6 @@ namespace MunicipalServicesApp
                 graph.Append("  Traversal Order: ");
                 foreach (var id in dfsResult)
                 {
-                    var req = allRequests.FirstOrDefault(r => r.IssueID == id);
                     graph.Append($"[{id}] ");
                 }
                 graph.AppendLine();
@@ -368,8 +389,8 @@ namespace MunicipalServicesApp
                 int totalWeight = 0;
                 foreach (var edge in mst)
                 {
-                    var from = allRequests.FirstOrDefault(r => r.IssueID == edge.From);
-                    var to = allRequests.FirstOrDefault(r => r.IssueID == edge.To);
+                    var from = ServiceRequestManager.Instance.GetRequestById(edge.From);
+                    var to = ServiceRequestManager.Instance.GetRequestById(edge.To);
                     graph.AppendLine($"[{edge.From}] {from?.Title} → [{edge.To}] {to?.Title} (Weight: {edge.Weight})");
                     totalWeight += edge.Weight;
                 }
@@ -383,6 +404,8 @@ namespace MunicipalServicesApp
 
         private void UpdateStatistics()
         {
+            var allRequests = ServiceRequestManager.Instance.AllRequests.ToList();
+
             StringBuilder stats = new StringBuilder();
             stats.AppendLine("═══════════════════════════════════════════════");
             stats.AppendLine("SERVICE REQUEST STATISTICS");
@@ -427,11 +450,14 @@ namespace MunicipalServicesApp
             }
             stats.AppendLine();
 
-            var avgDaysOpen = allRequests.Average(r => r.DaysOpen);
-            stats.AppendLine($"Average Days Open: {avgDaysOpen:F1} days");
+            if (allRequests.Count > 0)
+            {
+                var avgDaysOpen = allRequests.Average(r => r.DaysOpen);
+                stats.AppendLine($"Average Days Open: {avgDaysOpen:F1} days");
 
-            var overdueCount = allRequests.Count(r => DateTime.Now > r.SLADeadline && r.Status != "Resolved" && r.Status != "Closed");
-            stats.AppendLine($"Overdue Requests: {overdueCount}");
+                var overdueCount = allRequests.Count(r => DateTime.Now > r.SLADeadline && r.Status != "Resolved" && r.Status != "Closed");
+                stats.AppendLine($"Overdue Requests: {overdueCount}");
+            }
             stats.AppendLine();
 
             // DATA STRUCTURE UTILIZATION DEMONSTRATION
@@ -507,21 +533,10 @@ namespace MunicipalServicesApp
             {
                 ServiceRequest newRequest = addWindow.NewRequest;
 
-                // Add to ALL data structures
-                allRequests.Add(newRequest);
-                requestBST.Insert(newRequest);
-                priorityHeap.Insert(newRequest);
-                avlTree.Insert(newRequest.IssueID, newRequest);
-                rbTree.Insert(newRequest.IssueID, newRequest);
-                dependencyGraph.AddNode(newRequest.IssueID, newRequest);
-                classificationTree.Insert($"{newRequest.Priority}:{newRequest.IssueID}");
+                // Add to ServiceRequestManager (this will trigger OnRequestAdded event)
+                ServiceRequestManager.Instance.AddRequest(newRequest);
 
-                // Refresh all displays
-                DisplayAllRequests();
-                UpdateStatistics();
-                GenerateDependencyGraphVisualization();
-
-                txtStatusBar.Text = $"New request #{newRequest.IssueID} added to all data structures successfully!";
+                txtStatusBar.Text = $"New request #{newRequest.IssueID} added successfully!";
             }
         }
 
@@ -535,7 +550,16 @@ namespace MunicipalServicesApp
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
+            // Unsubscribe from events
+            ServiceRequestManager.Instance.RequestAdded -= OnRequestAdded;
             this.Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            // Cleanup: Unsubscribe from events
+            ServiceRequestManager.Instance.RequestAdded -= OnRequestAdded;
+            base.OnClosed(e);
         }
     }
 

@@ -55,5 +55,11 @@ namespace MunicipalServicesApp
             ServiceStatus statusWindow = new ServiceStatus(); 
             statusWindow.Show();
         }
+
+        private void btnManageRequests_Click(object sender, RoutedEventArgs e)
+        {
+            AdminServiceRequests adminServiceRequests = new AdminServiceRequests();
+            adminServiceRequests.Show();
+        }
     }
 }

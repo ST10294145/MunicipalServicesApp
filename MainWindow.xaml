@@ -20,7 +20,7 @@
                            DockPanel.Dock="Left"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <!-- View Reports Button (moved up here) -->
+                    <!-- View Reports Button -->
                     <Button x:Name="btnReportManagement" 
                             Content="View Reports" 
                             Width="120"
@@ -30,6 +30,17 @@
                             Foreground="White"
                             FontWeight="Bold"
                             Click="btnReportManagement_Click"/>
+
+                    <!-- ✅ NEW: Manage Requests Button -->
+                    <Button x:Name="btnManageRequests"
+                            Content="Manage Requests"
+                            Width="140"
+                            Height="35"
+                            Margin="10,0,0,0"
+                            Background="Teal"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="btnManageRequests_Click"/>
 
                     <!-- Admin Login Button -->
                     <Button x:Name="btnAdminLogin"
@@ -55,7 +66,6 @@
                         Margin="0,0,0,15"
                         Click="Button_Click"/>
 
-                <!-- Service Status moved here -->
                 <Button x:Name="btnServiceStatus"
                         Content="📊 Service Status Tracker"
                         Height="50" FontSize="16"

@@ -1,0 +1,189 @@
+﻿<Window x:Class="MunicipalServicesApp.AdvancedRequestAnalysis"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Advanced Request Analysis" 
+        Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#f0f4f8">
+
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.85"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel>
+        <!-- Header -->
+        <Border Background="#2c3e50" DockPanel.Dock="Top" Height="70" Padding="20,0">
+            <DockPanel VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <TextBlock Text="🔬" FontSize="28" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel>
+                        <TextBlock Text="Advanced Request Analysis"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
+                        <TextBlock Text="Utilizing all data structures for intelligent insights"
+                                   FontSize="12"
+                                   Foreground="#95a5a6"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Panel - Controls -->
+            <Border Grid.Column="0" 
+                    Background="White" 
+                    CornerRadius="10" 
+                    Padding="15"
+                    Margin="0,0,10,0">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="Analysis Tools" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               Margin="0,0,0,20"/>
+
+                    <!-- Search by ID (BST) -->
+                    <TextBlock Text="🔍 Search by ID (BST):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtSearchID" Height="30" Margin="0,0,0,5"/>
+                    <Button Content="Search" 
+                            Style="{StaticResource ModernButton}"
+                            Background="#3498db"
+                            Click="btnSearchByID_Click"/>
+
+                    <Separator Margin="0,15"/>
+
+                    <!-- Get Highest Priority (Heap) -->
+                    <TextBlock Text="⚡ Priority Queue (Heap):" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Button Content="Get Highest Priority Request" 
+                            Style="{StaticResource ModernButton}"
+                            Background="#e74c3c"
+                            Click="btnGetHighestPriority_Click"/>
+
+                    <Separator Margin="0,15"/>
+
+                    <!-- Category Tree -->
+                    <TextBlock Text="🌳 Category Tree:" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Button Content="View All Categories" 
+                            Style="{StaticResource ModernButton}"
+                            Background="#9b59b6"
+                            Click="btnViewCategories_Click"/>
+
+                    <Separator Margin="0,15"/>
+
+                    <!-- Related Requests (Graph) -->
+                    <TextBlock Text="🔗 Find Related (Graph):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtRelatedID" Height="30" Margin="0,0,0,5"/>
+                    <Button Content="Find Related Requests" 
+                            Style="{StaticResource ModernButton}"
+                            Background="#16a085"
+                            Click="btnFindRelated_Click"/>
+
+                    <Separator Margin="0,15"/>
+
+                    <!-- Grouped Requests (Union-Find) -->
+                    <TextBlock Text="👥 Grouped Requests:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtGroupID" Height="30" Margin="0,0,0,5"/>
+                    <Button Content="Get Grouped Requests" 
+                            Style="{StaticResource ModernButton}"
+                            Background="#f39c12"
+                            Click="btnGetGrouped_Click"/>
+
+                    <Separator Margin="0,15"/>
+
+                    <!-- Statistics -->
+                    <Button Content="📊 View Data Structure Stats" 
+                            Style="{StaticResource ModernButton}"
+                            Background="#34495e"
+                            Click="btnViewStats_Click"/>
+
+                    <Separator Margin="0,15"/>
+
+                    <!-- Sorted View (BST) -->
+                    <Button Content="📑 View Sorted by ID" 
+                            Style="{StaticResource ModernButton}"
+                            Background="#27ae60"
+                            Click="btnViewSorted_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Right Panel - Results -->
+            <Border Grid.Column="1" 
+                    Background="White" 
+                    CornerRadius="10" 
+                    Padding="20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                </Border.Effect>
+                <DockPanel>
+                    <TextBlock x:Name="txtResultTitle"
+                               DockPanel.Dock="Top"
+                               Text="Results will appear here" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               Margin="0,0,0,20"/>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!-- Results area -->
+                            <TextBlock x:Name="txtResults"
+                                       TextWrapping="Wrap"
+                                       FontSize="14"
+                                       LineHeight="22"/>
+
+                            <!-- DataGrid for list results -->
+                            <DataGrid x:Name="dgResults"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      Visibility="Collapsed"
+                                      GridLinesVisibility="None"
+                                      HeadersVisibility="Column"
+                                      RowHeight="35"
+                                      Margin="0,10,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IssueID}" Width="60"/>
+                                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                                    <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="120"/>
+                                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                                    <DataGridTextColumn Header="Priority" Binding="{Binding Priority}" Width="90"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>

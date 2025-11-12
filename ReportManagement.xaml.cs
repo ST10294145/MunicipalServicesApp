@@ -20,7 +20,7 @@ namespace MunicipalServicesApp
 
             string header = column.Header?.ToString();
 
-            // ✅ Only react if they double-click Feedback or Attachment
+         
             if (header == "Feedback")
             {
                 FeedbackWindow feedbackWindow = new FeedbackWindow(issue);

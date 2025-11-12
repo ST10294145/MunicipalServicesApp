@@ -4,9 +4,7 @@ using System.Linq;
 
 namespace MunicipalServicesApp
 {
-    // ============================================================================
     // BASIC TREE (N-ary Tree) - Hierarchical Category Organization
-    // ============================================================================
     public class BasicTreeNode<T>
     {
         public T Data { get; set; }

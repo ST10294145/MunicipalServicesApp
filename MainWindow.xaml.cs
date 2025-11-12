@@ -13,7 +13,7 @@ namespace MunicipalServicesApp
             RequestManager.Instance.LoadFromFile();
         }
 
-        // Admin Login Button
+ 
         private void btnAdminLogin_Click(object sender, RoutedEventArgs e)
         {
             AdminLogin loginWindow = new AdminLogin();
@@ -27,7 +27,8 @@ namespace MunicipalServicesApp
             }
         }
 
-        // USER SERVICES
+ 
+ 
 
         // Report Issues Button - Opens ReportIssueForm
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -40,8 +41,6 @@ namespace MunicipalServicesApp
         // Submit Service Request Button - Opens AddServiceRequest
         private void btnServiceRequest_Click(object sender, RoutedEventArgs e)
         {
-            // You can prompt user for email or use a default
-            // For now using a default email - you can enhance this later
             AddServiceRequest requestWindow = new AddServiceRequest("user@example.com");
             requestWindow.Show();
         }
@@ -60,7 +59,6 @@ namespace MunicipalServicesApp
             eventsWindow.ShowDialog();
         }
 
-        // ADMIN SERVICES
 
         // Manage Service Requests Button - Opens AdminServiceRequests (Admin Only)
         private void btnManageRequests_Click(object sender, RoutedEventArgs e)
@@ -89,6 +87,21 @@ namespace MunicipalServicesApp
             ReportManagement reportWindow = new ReportManagement();
             reportWindow.Show();
             this.Close();
+        }
+
+
+        // Advanced Analysis Button - Opens AdvancedRequestAnalysis (Admin Only)
+        private void btnAdvancedAnalysis_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isAdmin)
+            {
+                MessageBox.Show("Admin access required. Please login as admin first.",
+                    "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            AdvancedRequestAnalysis analysisWindow = new AdvancedRequestAnalysis();
+            analysisWindow.Show();
         }
     }
 }

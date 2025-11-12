@@ -13,7 +13,7 @@ namespace MunicipalServicesApp
             RequestManager.Instance.LoadFromFile();
         }
 
- 
+
         private void btnAdminLogin_Click(object sender, RoutedEventArgs e)
         {
             AdminLogin loginWindow = new AdminLogin();
@@ -27,8 +27,8 @@ namespace MunicipalServicesApp
             }
         }
 
- 
- 
+
+
 
         // Report Issues Button - Opens ReportIssueForm
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -50,6 +50,15 @@ namespace MunicipalServicesApp
         {
             ViewUserRequest viewUserRequest = new ViewUserRequest();
             viewUserRequest.Show();
+        }
+
+        // Report Manager Button - Opens RequestManager window
+        private void btnRequestManager_Click(object sender, RoutedEventArgs e)
+        {
+           
+            ReportManagement reportWindow = new ReportManagement();
+            reportWindow.Show();
+            this.Close();
         }
 
         // Local Events Button - Opens LocalEvents
